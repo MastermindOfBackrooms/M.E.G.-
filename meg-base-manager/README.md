@@ -49,7 +49,12 @@ problemi in fase di risoluzione
 - risorse
 
 possibili implementazioni :
+
 caricamenti
+
 obiettivi
+
 aggiunta livelli anomali
+
 aggiunta sistema diplomazia ancora più complesso
+
