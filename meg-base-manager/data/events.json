@@ -4,108 +4,15 @@
             "id": "entity_attack",
             "title": "Attacco di Entità",
             "description": "Una entità ostile ha attaccato la base.",
+            "level": "all",
+            "weight": 1.0,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 50}
+            },
             "effects": {
                 "resources": {
-                    "medical": -10,
-                    "supplies": -5
-                },
-                "stats": {
-                    "morale": -10
-                }
-            }
-        },
-        {
-            "id": "supply_cache",
-            "title": "Deposito Scoperto",
-            "description": "I nostri esploratori hanno trovato un deposito di rifornimenti.",
-            "effects": {
-                "resources": {
-                    "almond_water": 20,
-                    "food": 15,
-                    "supplies": 10
-                },
-                "stats": {
-                    "morale": 5
-                }
-            }
-        },
-        {
-            "id": "wanderer_arrival",
-            "title": "Arrivo di Vagabondi",
-            "description": "Un gruppo di vagabondi chiede rifugio nella base.",
-            "effects": {
-                "resources": {
-                    "food": -10,
-                    "almond_water": -5
-                },
-                "stats": {
-                    "prestige": 5
-                }
-            }
-        },
-        {
-            "id": "reality_shift",
-            "title": "Distorsione della Realtà",
-            "description": "Una forte distorsione spazio-temporale colpisce la base.",
-            "effects": {
-                "resources": {
-                    "supplies": -15,
-                    "medical": -10
-                },
-                "stats": {
-                    "morale": -15,
-                    "prestige": 10
-                }
-            }
-        },
-        {
-            "id": "research_breakthrough",
-            "title": "Scoperta Scientifica",
-            "description": "I ricercatori hanno fatto una scoperta importante sulle Backrooms.",
-            "effects": {
-                "resources": {
-                    "medical": 15,
-                    "almond_water": 10
-                },
-                "stats": {
-                    "prestige": 20,
-                    "morale": 10
-                }
-            }
-        },
-        {
-            "id": "power_failure",
-            "title": "Blackout",
-            "description": "Un improvviso blackout lascia la base al buio.",
-            "effects": {
-                "resources": {
-                    "fuel": -20,
+                    "medical": -15,
                     "supplies": -10
-                },
-                "stats": {
-                    "morale": -20
-                }
-            }
-        },
-        {
-            "id": "strange_transmission",
-            "title": "Trasmissione Misteriosa",
-            "description": "La base riceve una strana trasmissione da un livello sconosciuto.",
-            "effects": {
-                "stats": {
-                    "morale": -5,
-                    "prestige": 15
-                }
-            }
-        },
-        {
-            "id": "medical_emergency",
-            "title": "Emergenza Medica",
-            "description": "Un'epidemia misteriosa si diffonde tra il personale.",
-            "effects": {
-                "resources": {
-                    "medical": -25,
-                    "almond_water": -15
                 },
                 "stats": {
                     "morale": -15
@@ -113,258 +20,591 @@
             }
         },
         {
-            "id": "trading_caravan",
-            "title": "Carovana Commerciale",
-            "description": "Una carovana di commercianti visita la base.",
+            "id": "level0_lights_flicker",
+            "title": "Sfarfallio delle Luci del Level 0",
+            "description": "Le luci fluorescenti del Level 0 iniziano a sfarfallare in modo inquietante, causando disorientamento.",
+            "weight": 1.2,
             "effects": {
                 "resources": {
-                    "supplies": 25,
-                    "medical": 15,
-                    "fuel": -10
+                    "fuel": -5,
+                    "supplies": -3
                 },
                 "stats": {
-                    "morale": 10
+                    "morale": -8
                 }
             }
         },
         {
-            "id": "paranormal_activity",
-            "title": "Attività Paranormale",
-            "description": "Strane manifestazioni paranormali vengono riportate in tutta la base.",
-            "effects": {
-                "resources": {
-                    "almond_water": -20
-                },
-                "stats": {
-                    "morale": -25,
-                    "prestige": 15
-                }
-            }
-        },
-        {
-            "id": "temporal_anomaly",
-            "title": "Anomalia Temporale",
-            "description": "Un'anomalia temporale causa la ripetizione di eventi passati nella base.",
+            "id": "level1_office_haunting",
+            "title": "Uffici Infestati",
+            "description": "Gli uffici del Level 1 mostrano segni di attività paranormale.",
+            "weight": 1.3,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 55}
+            },
             "effects": {
                 "resources": {
                     "almond_water": -15,
-                    "medical": -10
+                    "supplies": -10
                 },
                 "stats": {
-                    "morale": -20,
-                    "prestige": 25
+                    "morale": -12,
+                    "prestige": 20
                 }
             }
         },
         {
-            "id": "interdimensional_traveler",
-            "title": "Viaggiatore Interdimensionale",
-            "description": "Un misterioso viaggiatore condivide conoscenze su nuovi livelli delle Backrooms.",
+            "id": "level2_pipe_dreams",
+            "title": "Sogni nei Tubi",
+            "description": "I tubi del Level 2 emettono strani suoni melodici che influenzano i sogni del personale.",
+            "weight": 1.4,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 45}
+            },
             "effects": {
                 "resources": {
-                    "almond_water": -5
-                },
-                "stats": {
-                    "prestige": 30,
-                    "morale": 15
-                }
-            }
-        },
-        {
-            "id": "reality_stabilization",
-            "title": "Stabilizzazione della Realtà",
-            "description": "Un evento raro che temporaneamente stabilizza la realtà intorno alla base.",
-            "effects": {
-                "resources": {
-                    "almond_water": 30,
-                    "medical": 20,
-                    "supplies": 25
-                },
-                "stats": {
-                    "morale": 25,
-                    "prestige": 10
-                }
-            }
-        },
-        {
-            "id": "dimensional_shift",
-            "title": "Spostamento Dimensionale",
-            "description": "La base subisce uno spostamento temporaneo in un altro livello delle Backrooms.",
-            "effects": {
-                "resources": {
-                    "fuel": -30,
-                    "supplies": -20
-                },
-                "stats": {
-                    "morale": -15,
-                    "prestige": 35
-                }
-            }
-        },
-        {
-            "id": "almond_spring",
-            "title": "Sorgente di Acqua di Mandorle",
-            "description": "Scoperta una rara sorgente naturale di acqua di mandorle.",
-            "effects": {
-                "resources": {
-                    "almond_water": 50
-                },
-                "stats": {
-                    "morale": 20,
-                    "prestige": 15
-                }
-            }
-        },
-        {
-            "id": "level_merge",
-            "title": "Fusione dei Livelli",
-            "description": "Due livelli delle Backrooms si sono temporaneamente fusi, creando strani fenomeni.",
-            "effects": {
-                "resources": {
-                    "almond_water": -20,
-                    "medical": -15,
-                    "fuel": 30
-                },
-                "stats": {
-                    "morale": -10,
-                    "prestige": 40
-                }
-            }
-        },
-        {
-            "id": "entity_migration",
-            "title": "Migrazione di Entità",
-            "description": "Un grande gruppo di entità sta migrando attraverso i livelli, aumentando il pericolo.",
-            "effects": {
-                "resources": {
-                    "medical": -25,
-                    "supplies": -20,
+                    "medical": -20,
                     "almond_water": -15
                 },
                 "stats": {
-                    "morale": -20,
+                    "morale": -18,
                     "prestige": 25
                 }
             }
         },
         {
-            "id": "reality_anchor",
-            "title": "Ancora della Realtà",
-            "description": "Un dispositivo antico stabilizza temporaneamente la struttura della base.",
+            "id": "level3_electrical_storm",
+            "title": "Tempesta Elettrica",
+            "description": "Una violenta tempesta elettrica si scatena nel Level 3.",
+            "weight": 1.5,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 50}
+            },
             "effects": {
                 "resources": {
-                    "fuel": -10
-                },
-                "stats": {
-                    "morale": 30,
-                    "prestige": 20
-                }
-            }
-        },
-        {
-            "id": "knowledge_surge",
-            "title": "Ondata di Conoscenza",
-            "description": "Un'improvvisa rivelazione fornisce nuove informazioni sui livelli circostanti.",
-            "effects": {
-                "resources": {
-                    "almond_water": -5
-                },
-                "stats": {
-                    "prestige": 35,
-                    "morale": 15
-                }
-            }
-        },
-        {
-            "id": "quantum_oscillation",
-            "title": "Oscillazione Quantica",
-            "description": "Fluttuazioni quantiche causano duplicazioni temporanee delle risorse.",
-            "effects": {
-                "resources": {
-                    "supplies": 40,
-                    "medical": 30,
-                    "fuel": 25
-                },
-                "stats": {
-                    "morale": -15,
-                    "prestige": 20
-                }
-            }
-        },
-        {
-            "id": "hive_awakening",
-            "title": "Risveglio dell'Alveare",
-            "description": "Un nido dormiente di entità si risveglia nei livelli inferiori.",
-            "effects": {
-                "resources": {
-                    "medical": -35,
-                    "almond_water": -25,
+                    "fuel": -25,
                     "supplies": -20
                 },
                 "stats": {
-                    "morale": -30,
-                    "prestige": 45
-                }
-            }
-        },
-        {
-            "id": "dimensional_resonance",
-            "title": "Risonanza Dimensionale",
-            "description": "Le pareti tra i livelli diventano temporaneamente più sottili.",
-            "effects": {
-                "resources": {
-                    "almond_water": -30,
-                    "fuel": 45
-                },
-                "stats": {
-                    "morale": -10,
+                    "morale": -15,
                     "prestige": 30
                 }
             }
         },
         {
-            "id": "level_collapse",
-            "title": "Collasso del Livello",
-            "description": "Un intero livello delle Backrooms sta collassando su se stesso.",
+            "id": "level4_abandoned_mall",
+            "title": "Centro Commerciale Abbandonato",
+            "description": "Strange attività nel centro commerciale abbandonato del Level 4.",
+            "weight": 1.2,
             "effects": {
                 "resources": {
-                    "almond_water": -40,
-                    "medical": -30,
-                    "supplies": -25
+                    "supplies": 25,
+                    "medical": -10
                 },
                 "stats": {
-                    "morale": -25,
-                    "prestige": 50
+                    "morale": -10,
+                    "prestige": 15
                 }
             }
         },
         {
-            "id": "entity_evolution",
-            "title": "Evoluzione delle Entità",
-            "description": "Le entità nei livelli inferiori stanno mostrando segni di adattamento e cambiamento.",
+            "id": "level5_hotel_guests",
+            "title": "Ospiti dell'Hotel",
+            "description": "Presenze inquietanti si aggirano nell'hotel del Level 5.",
+            "weight": 1.6,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 60}
+            },
             "effects": {
                 "resources": {
-                    "medical": -45,
-                    "almond_water": -35
+                    "almond_water": -30,
+                    "medical": -20
                 },
                 "stats": {
-                    "morale": -20,
+                    "morale": -25,
+                    "prestige": 35
+                }
+            }
+        },
+        {
+            "id": "level6_maze_shift",
+            "title": "Cambio del Labirinto",
+            "description": "Il labirinto del Level 6 sta cambiando la sua configurazione.",
+            "weight": 1.7,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 65}
+            },
+            "effects": {
+                "resources": {
+                    "supplies": -35,
+                    "fuel": -25
+                },
+                "stats": {
+                    "morale": -30,
                     "prestige": 40
                 }
             }
         },
         {
-            "id": "backrooms_expansion",
-            "title": "Espansione delle Backrooms",
-            "description": "Nuovi livelli si stanno formando, creando opportunità e pericoli.",
+            "id": "level7_thalassophobia",
+            "title": "Terrore degli Abissi",
+            "description": "Le acque infinite del Level 7 nascondono presenze inquietanti.",
+            "weight": 1.8,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 70}
+            },
             "effects": {
                 "resources": {
-                    "fuel": -30,
-                    "supplies": 50
+                    "almond_water": -40,
+                    "medical": -30
+                },
+                "stats": {
+                    "morale": -35,
+                    "prestige": 45
+                }
+            }
+        },
+        {
+            "id": "level8_caverns",
+            "title": "Echi delle Caverne",
+            "description": "Strani echi risuonano nelle caverne del Level 8.",
+            "weight": 1.4,
+            "effects": {
+                "resources": {
+                    "supplies": -20,
+                    "medical": -15
+                },
+                "stats": {
+                    "morale": -20,
+                    "prestige": 25
+                }
+            }
+        },
+        {
+            "id": "level9_suburbs_nostalgia",
+            "title": "Nostalgia dei Sobborghi",
+            "description": "Il tramonto perpetuo del Level 9 evoca ricordi nostalgici nei membri del personale.",
+            "level": "level_9",
+            "weight": 1.2,
+            "effects": {
+                "stats": {
+                    "morale": 10,
+                    "prestige": 5
+                }
+            }
+        },
+        {
+            "id": "level10_void_whispers",
+            "title": "Sussurri del Vuoto",
+            "description": "Strani sussurri emergono dal vuoto bianco del Level 10.",
+            "level": "level_10",
+            "weight": 1.5,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 60}
+            },
+            "effects": {
+                "resources": {
+                    "almond_water": -20
+                },
+                "stats": {
+                    "morale": -15,
+                    "prestige": 25
+                }
+            }
+        },
+        {
+            "id": "level11_hub_gathering",
+            "title": "Raduno al Hub",
+            "description": "Un grande raduno di esploratori al Level 11 porta nuove opportunità di commercio.",
+            "level": "level_11",
+            "weight": 1.3,
+            "effects": {
+                "resources": {
+                    "supplies": 30,
+                    "medical": 15
+                },
+                "stats": {
+                    "prestige": 10,
+                    "morale": 15
+                }
+            }
+        },
+        {
+            "id": "level12_time_distortion",
+            "title": "Distorsione Temporale",
+            "description": "Gli orologi nel Level 12 mostrano tempi impossibili, causando confusione nel personale.",
+            "level": "level_12",
+            "weight": 1.2,
+            "effects": {
+                "resources": {
+                    "almond_water": -10
+                },
+                "stats": {
+                    "morale": -8,
+                    "prestige": 15
+                }
+            }
+        },
+        {
+            "id": "level13_phantom_cars",
+            "title": "Auto Fantasma",
+            "description": "Le auto nel Level 13 si muovono da sole, creando un labirinto mobile.",
+            "level": "level_13",
+            "weight": 1.3,
+            "effects": {
+                "resources": {
+                    "fuel": -15,
+                    "supplies": -10
+                },
+                "stats": {
+                    "morale": -10,
+                    "prestige": 20
+                }
+            }
+        },
+        {
+            "id": "level14_sandstorm",
+            "title": "Tempesta di Sabbia Anomala",
+            "description": "Una tempesta di sabbia nel Level 14 trasporta oggetti da altri livelli.",
+            "level": "level_14",
+            "weight": 1.4,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 55}
+            },
+            "effects": {
+                "resources": {
+                    "supplies": 20,
+                    "medical": -15
+                },
+                "stats": {
+                    "morale": -12,
+                    "prestige": 25
+                }
+            }
+        },
+        {
+            "id": "level15_living_mannequins",
+            "title": "Manichini Viventi",
+            "description": "I manichini nel Level 15 hanno iniziato a muoversi quando non vengono osservati.",
+            "level": "level_15",
+            "weight": 1.5,
+            "effects": {
+                "resources": {
+                    "almond_water": -20,
+                    "supplies": -15
+                },
+                "stats": {
+                    "morale": -15,
+                    "prestige": 30
+                }
+            }
+        },
+        {
+            "id": "level16_class_change",
+            "title": "Lezioni Fantasma",
+            "description": "Le aule della scuola cambiano posizione, intrappolando alcuni esploratori.",
+            "level": "level_16",
+            "weight": 1.3,
+            "effects": {
+                "resources": {
+                    "supplies": -15,
+                    "almond_water": -10
+                },
+                "stats": {
+                    "morale": -10,
+                    "prestige": 20
+                }
+            }
+        },
+        {
+            "id": "level17_darkness_surge",
+            "title": "Ondata di Oscurità",
+            "description": "L'oscurità del Level 17 diventa più densa, rendendo inefficaci le fonti di luce.",
+            "level": "level_17",
+            "weight": 1.6,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 65}
+            },
+            "effects": {
+                "resources": {
+                    "fuel": -25,
+                    "medical": -15
+                },
+                "stats": {
+                    "morale": -20,
+                    "prestige": 35
+                }
+            }
+        },
+        {
+            "id": "level18_archive_discovery",
+            "title": "Scoperta negli Archivi",
+            "description": "Documenti antichi rivelano segreti sulle Backrooms.",
+            "level": "level_18",
+            "weight": 1.2,
+            "effects": {
+                "stats": {
+                    "prestige": 25,
+                    "morale": 10
+                }
+            }
+        },
+        {
+            "id": "level19_hospital_emergency",
+            "title": "Emergenza in Ospedale",
+            "description": "Gli strumenti chirurgici hanno iniziato a muoversi da soli, richiedendo più risorse mediche.",
+            "level": "level_19",
+            "weight": 1.4,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 60}
+            },
+            "effects": {
+                "resources": {
+                    "medical": -30,
+                    "almond_water": -15
+                },
+                "stats": {
+                    "morale": -15,
+                    "prestige": 30
+                }
+            }
+        },
+        {
+            "id": "level20_garden_bloom",
+            "title": "Fioritura Impossibile",
+            "description": "Le piante del cortile crescono in forme impossibili, producendo frutti strani.",
+            "level": "level_20",
+            "weight": 1.3,
+            "effects": {
+                "resources": {
+                    "supplies": 20,
+                    "medical": 15
+                },
+                "stats": {
+                    "morale": 10,
+                    "prestige": 15
+                }
+            }
+        },
+        {
+            "id": "level21_maze_shift",
+            "title": "Cambio del Labirinto",
+            "description": "I numeri sulle porte cambiano più rapidamente del solito, causando confusione.",
+            "level": "level_21",
+            "weight": 1.4,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 55}
+            },
+            "effects": {
+                "resources": {
+                    "almond_water": -20,
+                    "supplies": -15
+                },
+                "stats": {
+                    "morale": -15,
+                    "prestige": 25
+                }
+            }
+        },
+        {
+            "id": "level22_pool_anomaly",
+            "title": "Anomalia nelle Piscine",
+            "description": "L'acqua nelle piscine mostra proprietà insolite, attirando l'attenzione dei ricercatori.",
+            "level": "level_22",
+            "weight": 1.3,
+            "effects": {
+                "resources": {
+                    "medical": -10,
+                    "almond_water": 25
+                },
+                "stats": {
+                    "prestige": 20,
+                    "morale": -5
+                }
+            }
+        },
+        {
+            "id": "level23_experiment_breach",
+            "title": "Fuga di Esperimento",
+            "description": "Uno degli esperimenti nel laboratorio è sfuggito al controllo.",
+            "level": "level_23",
+            "weight": 1.5,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 70}
+            },
+            "effects": {
+                "resources": {
+                    "medical": -25,
+                    "fuel": -20,
+                    "supplies": -15
+                },
+                "stats": {
+                    "morale": -20,
+                    "prestige": 35
+                }
+            }
+        },
+        {
+            "id": "level24_game_glitch",
+            "title": "Glitch nei Giochi",
+            "description": "I giochi arcade mostrano scenari delle Backrooms mai visti prima.",
+            "level": "level_24",
+            "weight": 1.2,
+            "effects": {
+                "stats": {
+                    "prestige": 15,
+                    "morale": 10
+                }
+            }
+        },
+        {
+            "id": "level25_radio_transmission",
+            "title": "Trasmissione Misteriosa",
+            "description": "Le radio captano messaggi da dimensioni sconosciute.",
+            "level": "level_25",
+            "weight": 1.3,
+            "effects": {
+                "resources": {
+                    "fuel": -10
+                },
+                "stats": {
+                    "prestige": 20,
+                    "morale": -5
+                }
+            }
+        },
+        {
+            "id": "level26_phantom_performance",
+            "title": "Spettacolo Fantasma",
+            "description": "Gli attori non umani mettono in scena una performance inquietante.",
+            "level": "level_26",
+            "weight": 1.4,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 60}
+            },
+            "effects": {
+                "resources": {
+                    "almond_water": -20,
+                    "supplies": -15
+                },
+                "stats": {
+                    "morale": -15,
+                    "prestige": 30
+                }
+            }
+        },
+        {
+            "id": "level27_memory_leak",
+            "title": "Fuga di Memorie",
+            "description": "Le scatole nel magazzino rilasciano ricordi dimenticati nell'aria.",
+            "level": "level_27",
+            "weight": 1.3,
+            "effects": {
+                "resources": {
+                    "supplies": -10
                 },
                 "stats": {
                     "morale": 15,
+                    "prestige": 20
+                }
+            }
+        },
+        {
+            "id": "level28_time_freeze",
+            "title": "Congelamento Temporale",
+            "description": "Il tempo nell'ufficio si ferma completamente per alcuni minuti.",
+            "level": "level_28",
+            "weight": 1.4,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 65}
+            },
+            "effects": {
+                "resources": {
+                    "almond_water": -15,
+                    "supplies": -10
+                },
+                "stats": {
+                    "morale": -10,
+                    "prestige": 25
+                }
+            }
+        },
+        {
+            "id": "level29_assembly_malfunction",
+            "title": "Malfunzionamento Catena di Montaggio",
+            "description": "Le macchine producono oggetti impossibili che scompaiono istantaneamente.",
+            "level": "level_29",
+            "weight": 1.4,
+            "effects": {
+                "resources": {
+                    "fuel": -20,
+                    "supplies": -15
+                },
+                "stats": {
+                    "morale": -10,
+                    "prestige": 25
+                }
+            }
+        },
+        {
+            "id": "level30_gravity_shift",
+            "title": "Cambio di Gravità",
+            "description": "La gravità cambia direzione improvvisamente, causando caos.",
+            "level": "level_30",
+            "weight": 1.5,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 75}
+            },
+            "effects": {
+                "resources": {
+                    "medical": -25,
+                    "supplies": -20
+                },
+                "stats": {
+                    "morale": -20,
                     "prestige": 35
+                }
+            }
+        },
+        {
+            "id": "level_pendulum_temporal_storm",
+            "title": "Tempesta Temporale",
+            "description": "Una violenta tempesta temporale distorce la realtà nel Level Pendulum.",
+            "level": "level_pendulum",
+            "weight": 1.8,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 80}
+            },
+            "effects": {
+                "resources": {
+                    "temporal_fragments": -30,
+                    "reality_shards": -25,
+                    "almond_water": -20
+                },
+                "stats": {
+                    "morale": -25,
+                    "prestige": 45
+                }
+            }
+        },
+        {
+            "id": "level_omega_reality_breach",
+            "title": "Breccia nella Realtà",
+            "description": "Una breccia nel tessuto della realtà causa effetti imprevedibili nel Level Omega.",
+            "level": "level_omega",
+            "weight": 2.0,
+            "conditions": {
+                "defense_rating": {"operator": "<=", "value": 90}
+            },
+            "effects": {
+                "resources": {
+                    "omega_fragments": -35,
+                    "reality_core": -20,
+                    "pure_almond": -30
+                },
+                "stats": {
+                    "morale": -30,
+                    "prestige": 50
                 }
             }
         }

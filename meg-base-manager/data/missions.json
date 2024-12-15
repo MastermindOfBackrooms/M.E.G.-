@@ -836,6 +836,7 @@
                 },
                 "intel_points": 30
             },
+            "valid_levels": ["level_0", "level_1", "level_4", "level_5", "level_8", "level_11"],
             "level_requirements": {
                 "min_knowledge": 2,
                 "max_difficulty": 5
