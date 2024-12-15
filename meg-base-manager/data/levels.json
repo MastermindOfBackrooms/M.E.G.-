@@ -2,33 +2,343 @@
     "levels": [
         {
             "id": "level_0",
-            "name": "Level 0",
-            "description": "Il primo livello delle Backrooms, caratterizzato da uffici infiniti con moquette umida e luci fluorescenti ronzanti.",
+            "name": "Level 0 - The Lobby",
+            "description": "Infinite uffici vuoti con moquette umida, pareti giallo sporco e luci fluorescenti ronzanti. Noclippando attraverso le pareti sbagliate della realtà si può finire qui.",
             "difficulty": 1,
             "danger_level": "Basso",
-            "entities": ["Hound", "Insanity"],
+            "entities": ["Hounds", "Bacterium", "Skin-Stealers"],
             "resources": ["almond_water", "supplies"],
             "special_items": ["Fluorescent Tubes", "Carpet Fibers"]
         },
         {
             "id": "level_1",
-            "name": "Level 1",
-            "description": "Un labirinto di magazzini industriali con tubature esposte e macchinari abbandonati.",
+            "name": "Level 1 - Habitable Zone",
+            "description": "Un complesso di magazzini bui e umidi con macchinari industriali abbandonati. Punto d'incontro comune per sopravvissuti e base per molti gruppi.",
             "difficulty": 2,
-            "danger_level": "Medio",
-            "entities": ["Smiler", "Dullers"],
-            "resources": ["fuel", "supplies"],
+            "danger_level": "Basso",
+            "entities": ["Dullers", "Clumps", "Skin-Stealers"],
+            "resources": ["almond_water", "supplies", "fuel"],
             "special_items": ["Machine Parts", "Industrial Tools"]
         },
         {
             "id": "level_2",
-            "name": "Level 2",
-            "description": "Un complesso di manutenzione con tubi e valvole che emettono vapore bollente.",
+            "name": "Level 2 - Pipe Dreams",
+            "description": "Labirinto di corridoi di servizio con tubi che emettono vapore. L'aria è calda e umida, con occasionali suoni di macchinari distanti.",
             "difficulty": 3,
             "danger_level": "Alto",
-            "entities": ["Skin-Stealers", "Steam Wraiths"],
-            "resources": ["medical", "fuel"],
+            "entities": ["Smilers", "Child Facelings", "Window Workers"],
+            "resources": ["medical", "fuel", "supplies"],
             "special_items": ["Pressure Valves", "Heat Resistant Gear"]
+        },
+        {
+            "id": "level_3",
+            "name": "Level 3 - Electrical Station",
+            "description": "Una vasta centrale elettrica con macchinari pericolosi e archi elettrici. Il ronzio dell'elettricità è costante e minaccioso.",
+            "difficulty": 4,
+            "danger_level": "Alto",
+            "entities": ["Wire Devils", "Adult Facelings", "Skin-Stealers"],
+            "resources": ["fuel", "supplies", "medical"],
+            "special_items": ["Isolation Suit", "Conductor Rod"]
+        },
+        {
+            "id": "level_4",
+            "name": "Level 4 - Abandoned Office",
+            "description": "Uffici abbandonati con una strana atmosfera di nostalgia. Il tempo sembra scorrere in modo non lineare qui.",
+            "difficulty": 2,
+            "danger_level": "Medio",
+            "entities": ["Wretch", "The Lost", "Filing Clerks"],
+            "resources": ["almond_water", "supplies"],
+            "special_items": ["Old Documents", "Time Pieces"]
+        },
+        {
+            "id": "level_5",
+            "name": "Level 5 - Terror Hotel",
+            "description": "Un hotel infinito con corridoi rossi e porte numerate casualmente. La musica d'ambiente suona distorta e inquietante.",
+            "difficulty": 4,
+            "danger_level": "Alto",
+            "entities": ["Death Moths", "Hotel Staff", "The Lost"],
+            "resources": ["almond_water", "medical", "supplies"],
+            "special_items": ["Hotel Keys", "Guest Records"]
+        },
+        {
+            "id": "level_6",
+            "name": "Level 6 - Lights Out",
+            "description": "Un'oscurità infinita e impenetrabile. Le torce e altre fonti di luce hanno una portata estremamente limitata.",
+            "difficulty": 5,
+            "danger_level": "Molto Alto",
+            "entities": ["The Deep", "Shadow Beings", "Void Dwellers"],
+            "resources": ["fuel", "medical"],
+            "special_items": ["Void Crystals", "Dark Matter"]
+        },
+        {
+            "id": "level_7",
+            "name": "Level 7 - Thalassophobia",
+            "description": "Un oceano infinito di acque scure con isole occasionali. L'acqua è fredda e innaturalmente densa.",
+            "difficulty": 5,
+            "danger_level": "Molto Alto",
+            "entities": ["Aquatic Entities", "Deep Ones", "Water Lurkers"],
+            "resources": ["almond_water", "medical"],
+            "special_items": ["Water Samples", "Marine Equipment"]
+        },
+        {
+            "id": "level_8",
+            "name": "Level 8 - Caverns",
+            "description": "Un vasto sistema di caverne naturali con formazioni rocciose impossibili. I tunnel sembrano cambiare quando non osservati.",
+            "difficulty": 4,
+            "danger_level": "Alto",
+            "entities": ["Cave Dwellers", "Rock Mimics", "Crystal Beings"],
+            "resources": ["almond_water", "supplies"],
+            "special_items": ["Cave Crystals", "Ancient Artifacts"]
+        },
+        {
+            "id": "level_9",
+            "name": "Level 9 - Suburbs",
+            "description": "Un quartiere residenziale infinito con case identiche. Il cielo è sempre un tramonto perpetuo.",
+            "difficulty": 3,
+            "danger_level": "Medio",
+            "entities": ["Neighborhood Watch", "Suburban Stalkers", "House Spirits"],
+            "resources": ["supplies", "medical"],
+            "special_items": ["House Keys", "Family Photos"]
+        },
+        {
+            "id": "level_10",
+            "name": "Level 10 - The End",
+            "description": "Un vuoto bianco infinito senza caratteristiche distintive. Il silenzio è assoluto e opprimente.",
+            "difficulty": 5,
+            "danger_level": "Molto Alto",
+            "entities": ["End Beings", "Void Walkers", "The White"],
+            "resources": ["almond_water"],
+            "special_items": ["Void Essence", "White Matter"]
+        },
+        {
+            "id": "level_11",
+            "name": "Level 11 - The Hub",
+            "description": "Una città infinita di grattacieli interconnessi. Base principale del M.E.G. e punto d'incontro per molti gruppi.",
+            "difficulty": 2,
+            "danger_level": "Basso",
+            "entities": ["Traders", "Wanderers", "Explorers"],
+            "resources": ["almond_water", "supplies", "medical", "fuel"],
+            "special_items": ["M.E.G. Badges", "Trading Permits"]
+        },
+        {
+            "id": "level_12",
+            "name": "Level 12 - Conference Center",
+            "description": "Un enorme centro conferenze con sale riunioni infinite. Gli orologi mostrano tutti orari diversi e le presentazioni continuano senza presentatori.",
+            "difficulty": 2,
+            "danger_level": "Basso",
+            "entities": ["Business Entities", "Phantom Speakers", "Meeting Spirits"],
+            "resources": ["almond_water", "supplies"],
+            "special_items": ["Presentation Slides", "Conference Badges"]
+        },
+        {
+            "id": "level_13",
+            "name": "Level 13 - The Infinite Parking Garage",
+            "description": "Un garage multipiano che si estende all'infinito in tutte le direzioni. Le auto parcheggiate sono sempre le stesse ma cambiano posizione.",
+            "difficulty": 3,
+            "danger_level": "Medio",
+            "entities": ["Car Mimics", "Parking Attendants", "Oil Slicks"],
+            "resources": ["fuel", "supplies"],
+            "special_items": ["Parking Tickets", "Car Keys"]
+        },
+        {
+            "id": "level_14",
+            "name": "Level 14 - The Desert",
+            "description": "Un deserto infinito con tempeste di sabbia che trasportano oggetti da altri livelli. La temperatura oscilla tra estremi impossibili.",
+            "difficulty": 4,
+            "danger_level": "Alto",
+            "entities": ["Sand Wraiths", "Desert Wanderers", "Heat Mirages"],
+            "resources": ["almond_water"],
+            "special_items": ["Sand Crystals", "Desert Glass"]
+        },
+        {
+            "id": "level_15",
+            "name": "Level 15 - The Mall",
+            "description": "Un centro commerciale che sembra normale ma i negozi vendono oggetti impossibili. I mannequin seguono i visitatori con lo sguardo.",
+            "difficulty": 3,
+            "danger_level": "Medio",
+            "entities": ["Shop Keepers", "Living Mannequins", "Sale Hunters"],
+            "resources": ["supplies", "almond_water"],
+            "special_items": ["Discount Cards", "Strange Merchandise"]
+        },
+        {
+            "id": "level_16",
+            "name": "Level 16 - The School",
+            "description": "Un'immensa scuola con corridoi labirintici e aule che cambiano posizione. Le lezioni continuano senza insegnanti.",
+            "difficulty": 3,
+            "danger_level": "Medio",
+            "entities": ["Teacher Entities", "Student Shadows", "Hall Monitors"],
+            "resources": ["supplies", "almond_water"],
+            "special_items": ["School Records", "Lost Homework"]
+        },
+        {
+            "id": "level_17",
+            "name": "Level 17 - The Pitch Black",
+            "description": "Un livello di completa oscurità dove le fonti di luce sembrano attirare entità ostili.",
+            "difficulty": 5,
+            "danger_level": "Molto Alto",
+            "entities": ["Dark Seekers", "Light Eaters", "Shadow Beings"],
+            "resources": ["fuel", "almond_water"],
+            "special_items": ["Dark Matter", "Void Fragments"]
+        },
+        {
+            "id": "level_18",
+            "name": "Level 18 - The Archives",
+            "description": "Un vasto archivio di documenti infiniti che contengono informazioni su altri livelli e entità.",
+            "difficulty": 2,
+            "danger_level": "Basso",
+            "entities": ["Archivists", "Paper Spirits", "Document Keepers"],
+            "resources": ["supplies", "almond_water"],
+            "special_items": ["Classified Files", "Ancient Records"]
+        },
+        {
+            "id": "level_19",
+            "name": "Level 19 - The Hospital",
+            "description": "Un ospedale infinito con strumenti chirurgici che si muovono da soli e pazienti fantasma.",
+            "difficulty": 4,
+            "danger_level": "Alto",
+            "entities": ["Ghost Doctors", "Patient Spirits", "Living Equipment"],
+            "resources": ["medical", "almond_water"],
+            "special_items": ["Medical Records", "Surgical Tools"]
+        },
+        {
+            "id": "level_20",
+            "name": "Level 20 - The Courtyard",
+            "description": "Un gigantesco cortile con un cielo artificiale e piante che crescono in modi impossibili.",
+            "difficulty": 3,
+            "danger_level": "Medio",
+            "entities": ["Garden Keepers", "Plant Mimics", "Living Vines"],
+            "resources": ["almond_water", "supplies"],
+            "special_items": ["Strange Seeds", "Living Flowers"]
+        },
+        {
+            "id": "level_21",
+            "name": "Level 21 - Endless Maze",
+            "description": "Un labirinto infinito di corridoi bianchi con porte numerate in modo casuale. I numeri sulle porte cambiano quando non vengono osservati.",
+            "difficulty": 4,
+            "danger_level": "Alto",
+            "entities": ["Number Watchers", "Door Spirits", "Maze Dwellers"],
+            "resources": ["almond_water", "supplies"],
+            "special_items": ["Door Numbers", "Maze Maps"]
+        },
+        {
+            "id": "level_22",
+            "name": "Level 22 - The Poolrooms",
+            "description": "Una serie infinita di piscine illuminate da una luce innaturale. L'acqua è tiepida e ha proprietà strane.",
+            "difficulty": 3,
+            "danger_level": "Medio",
+            "entities": ["Water Walkers", "Pool Cleaners", "Chlorine Spirits"],
+            "resources": ["almond_water", "medical"],
+            "special_items": ["Pool Keys", "Strange Water Samples"]
+        },
+        {
+            "id": "level_23",
+            "name": "Level 23 - The Laboratory",
+            "description": "Un complesso di laboratori abbandonati dove gli esperimenti continuano da soli. Strumenti e campioni si muovono autonomamente.",
+            "difficulty": 5,
+            "danger_level": "Molto Alto",
+            "entities": ["Lab Phantoms", "Living Experiments", "Data Spirits"],
+            "resources": ["medical", "fuel", "supplies"],
+            "special_items": ["Research Data", "Experimental Compounds"]
+        },
+        {
+            "id": "level_24",
+            "name": "Level 24 - The Gaming Hall",
+            "description": "Una sala giochi infinita dove i giochi arcade funzionano senza elettricità e mostrano scenari impossibili.",
+            "difficulty": 2,
+            "danger_level": "Basso",
+            "entities": ["Game Spirits", "Pixel Entities", "Score Keepers"],
+            "resources": ["supplies", "almond_water"],
+            "special_items": ["Arcade Tokens", "Game Cartridges"]
+        },
+        {
+            "id": "level_25",
+            "name": "Level 25 - The Radio Station",
+            "description": "Una stazione radio abbandonata che trasmette messaggi inquietanti da altre dimensioni.",
+            "difficulty": 3,
+            "danger_level": "Medio",
+            "entities": ["Static Beings", "Radio Hosts", "Frequency Walkers"],
+            "resources": ["fuel", "supplies"],
+            "special_items": ["Radio Parts", "Strange Recordings"]
+        },
+        {
+            "id": "level_26",
+            "name": "Level 26 - The Theatre",
+            "description": "Un teatro infinito dove spettacoli surreali vengono eseguiti da attori non umani per un pubblico di ombre.",
+            "difficulty": 4,
+            "danger_level": "Alto",
+            "entities": ["Shadow Audience", "Stage Phantoms", "Curtain Dwellers"],
+            "resources": ["almond_water", "supplies"],
+            "special_items": ["Show Tickets", "Props"]
+        },
+        {
+            "id": "level_27",
+            "name": "Level 27 - The Warehouse",
+            "description": "Un magazzino infinito pieno di scatole che contengono oggetti impossibili e ricordi dimenticati.",
+            "difficulty": 3,
+            "danger_level": "Medio",
+            "entities": ["Box Guardians", "Memory Collectors", "Inventory Spirits"],
+            "resources": ["supplies", "fuel"],
+            "special_items": ["Lost Memories", "Strange Artifacts"]
+        },
+        {
+            "id": "level_28",
+            "name": "Level 28 - The Frozen Office",
+            "description": "Un ufficio congelato nel tempo dove i computer mostrano email del futuro e il personale è congelato in pose naturali.",
+            "difficulty": 4,
+            "danger_level": "Alto",
+            "entities": ["Time Frozen", "Office Spirits", "Data Ghosts"],
+            "resources": ["almond_water", "supplies"],
+            "special_items": ["Future Emails", "Frozen Memories"]
+        },
+        {
+            "id": "level_29",
+            "name": "Level 29 - The Assembly Line",
+            "description": "Una fabbrica infinita dove le macchine assemblano prodotti che si dissolvono appena completati.",
+            "difficulty": 4,
+            "danger_level": "Alto",
+            "entities": ["Machine Spirits", "Product Phantoms", "Assembly Ghosts"],
+            "resources": ["fuel", "supplies"],
+            "special_items": ["Ghost Products", "Machine Parts"]
+        },
+        {
+            "id": "level_30",
+            "name": "Level 30 - The Ceiling",
+            "description": "Un livello dove il pavimento e il soffitto sono invertiti, e la gravità cambia in modo imprevedibile.",
+            "difficulty": 5,
+            "danger_level": "Molto Alto",
+            "entities": ["Gravity Shifters", "Ceiling Walkers", "Space Benders"],
+            "resources": ["almond_water", "medical"],
+            "special_items": ["Gravity Crystals", "Space Fragments"]
+        },
+        {
+            "id": "level_pendulum",
+            "name": "Level Pendulum",
+            "description": "Un livello misterioso che oscilla tra realtà diverse. Il tempo e lo spazio si piegano in modi imprevedibili.",
+            "difficulty": 6,
+            "danger_level": "Estremo",
+            "unlock_requirements": {
+                "prestige": 80,
+                "intel_points": 500,
+                "completed_missions": ["explore_anomaly", "time_research"]
+            },
+            "entities": ["Time Warpers", "Reality Benders", "Pendulum Keepers"],
+            "resources": ["almond_water", "temporal_fragments", "reality_shards"],
+            "special_items": ["Pendulum Crystal", "Time-Lock Key", "Reality Anchor"]
+        },
+        {
+            "id": "level_omega",
+            "name": "Level Omega",
+            "description": "Il livello finale, una convergenza di tutte le realtà delle Backrooms. Solo gli esploratori più esperti osano avventurarsi qui.",
+            "difficulty": 7,
+            "danger_level": "Massimo",
+            "unlock_requirements": {
+                "prestige": 100,
+                "intel_points": 1000,
+                "completed_missions": ["master_explorer", "reality_breach"]
+            },
+            "entities": ["Omega Beings", "Reality Masters", "The Final"],
+            "resources": ["pure_almond", "omega_fragments", "reality_core"],
+            "special_items": ["Omega Key", "Reality Codex", "The Final Truth"]
         }
     ]
 }

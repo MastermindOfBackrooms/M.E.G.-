@@ -42,6 +42,331 @@
                     "prestige": 5
                 }
             }
+        },
+        {
+            "id": "reality_shift",
+            "title": "Distorsione della Realtà",
+            "description": "Una forte distorsione spazio-temporale colpisce la base.",
+            "effects": {
+                "resources": {
+                    "supplies": -15,
+                    "medical": -10
+                },
+                "stats": {
+                    "morale": -15,
+                    "prestige": 10
+                }
+            }
+        },
+        {
+            "id": "research_breakthrough",
+            "title": "Scoperta Scientifica",
+            "description": "I ricercatori hanno fatto una scoperta importante sulle Backrooms.",
+            "effects": {
+                "resources": {
+                    "medical": 15,
+                    "almond_water": 10
+                },
+                "stats": {
+                    "prestige": 20,
+                    "morale": 10
+                }
+            }
+        },
+        {
+            "id": "power_failure",
+            "title": "Blackout",
+            "description": "Un improvviso blackout lascia la base al buio.",
+            "effects": {
+                "resources": {
+                    "fuel": -20,
+                    "supplies": -10
+                },
+                "stats": {
+                    "morale": -20
+                }
+            }
+        },
+        {
+            "id": "strange_transmission",
+            "title": "Trasmissione Misteriosa",
+            "description": "La base riceve una strana trasmissione da un livello sconosciuto.",
+            "effects": {
+                "stats": {
+                    "morale": -5,
+                    "prestige": 15
+                }
+            }
+        },
+        {
+            "id": "medical_emergency",
+            "title": "Emergenza Medica",
+            "description": "Un'epidemia misteriosa si diffonde tra il personale.",
+            "effects": {
+                "resources": {
+                    "medical": -25,
+                    "almond_water": -15
+                },
+                "stats": {
+                    "morale": -15
+                }
+            }
+        },
+        {
+            "id": "trading_caravan",
+            "title": "Carovana Commerciale",
+            "description": "Una carovana di commercianti visita la base.",
+            "effects": {
+                "resources": {
+                    "supplies": 25,
+                    "medical": 15,
+                    "fuel": -10
+                },
+                "stats": {
+                    "morale": 10
+                }
+            }
+        },
+        {
+            "id": "paranormal_activity",
+            "title": "Attività Paranormale",
+            "description": "Strane manifestazioni paranormali vengono riportate in tutta la base.",
+            "effects": {
+                "resources": {
+                    "almond_water": -20
+                },
+                "stats": {
+                    "morale": -25,
+                    "prestige": 15
+                }
+            }
+        },
+        {
+            "id": "temporal_anomaly",
+            "title": "Anomalia Temporale",
+            "description": "Un'anomalia temporale causa la ripetizione di eventi passati nella base.",
+            "effects": {
+                "resources": {
+                    "almond_water": -15,
+                    "medical": -10
+                },
+                "stats": {
+                    "morale": -20,
+                    "prestige": 25
+                }
+            }
+        },
+        {
+            "id": "interdimensional_traveler",
+            "title": "Viaggiatore Interdimensionale",
+            "description": "Un misterioso viaggiatore condivide conoscenze su nuovi livelli delle Backrooms.",
+            "effects": {
+                "resources": {
+                    "almond_water": -5
+                },
+                "stats": {
+                    "prestige": 30,
+                    "morale": 15
+                }
+            }
+        },
+        {
+            "id": "reality_stabilization",
+            "title": "Stabilizzazione della Realtà",
+            "description": "Un evento raro che temporaneamente stabilizza la realtà intorno alla base.",
+            "effects": {
+                "resources": {
+                    "almond_water": 30,
+                    "medical": 20,
+                    "supplies": 25
+                },
+                "stats": {
+                    "morale": 25,
+                    "prestige": 10
+                }
+            }
+        },
+        {
+            "id": "dimensional_shift",
+            "title": "Spostamento Dimensionale",
+            "description": "La base subisce uno spostamento temporaneo in un altro livello delle Backrooms.",
+            "effects": {
+                "resources": {
+                    "fuel": -30,
+                    "supplies": -20
+                },
+                "stats": {
+                    "morale": -15,
+                    "prestige": 35
+                }
+            }
+        },
+        {
+            "id": "almond_spring",
+            "title": "Sorgente di Acqua di Mandorle",
+            "description": "Scoperta una rara sorgente naturale di acqua di mandorle.",
+            "effects": {
+                "resources": {
+                    "almond_water": 50
+                },
+                "stats": {
+                    "morale": 20,
+                    "prestige": 15
+                }
+            }
+        },
+        {
+            "id": "level_merge",
+            "title": "Fusione dei Livelli",
+            "description": "Due livelli delle Backrooms si sono temporaneamente fusi, creando strani fenomeni.",
+            "effects": {
+                "resources": {
+                    "almond_water": -20,
+                    "medical": -15,
+                    "fuel": 30
+                },
+                "stats": {
+                    "morale": -10,
+                    "prestige": 40
+                }
+            }
+        },
+        {
+            "id": "entity_migration",
+            "title": "Migrazione di Entità",
+            "description": "Un grande gruppo di entità sta migrando attraverso i livelli, aumentando il pericolo.",
+            "effects": {
+                "resources": {
+                    "medical": -25,
+                    "supplies": -20,
+                    "almond_water": -15
+                },
+                "stats": {
+                    "morale": -20,
+                    "prestige": 25
+                }
+            }
+        },
+        {
+            "id": "reality_anchor",
+            "title": "Ancora della Realtà",
+            "description": "Un dispositivo antico stabilizza temporaneamente la struttura della base.",
+            "effects": {
+                "resources": {
+                    "fuel": -10
+                },
+                "stats": {
+                    "morale": 30,
+                    "prestige": 20
+                }
+            }
+        },
+        {
+            "id": "knowledge_surge",
+            "title": "Ondata di Conoscenza",
+            "description": "Un'improvvisa rivelazione fornisce nuove informazioni sui livelli circostanti.",
+            "effects": {
+                "resources": {
+                    "almond_water": -5
+                },
+                "stats": {
+                    "prestige": 35,
+                    "morale": 15
+                }
+            }
+        },
+        {
+            "id": "quantum_oscillation",
+            "title": "Oscillazione Quantica",
+            "description": "Fluttuazioni quantiche causano duplicazioni temporanee delle risorse.",
+            "effects": {
+                "resources": {
+                    "supplies": 40,
+                    "medical": 30,
+                    "fuel": 25
+                },
+                "stats": {
+                    "morale": -15,
+                    "prestige": 20
+                }
+            }
+        },
+        {
+            "id": "hive_awakening",
+            "title": "Risveglio dell'Alveare",
+            "description": "Un nido dormiente di entità si risveglia nei livelli inferiori.",
+            "effects": {
+                "resources": {
+                    "medical": -35,
+                    "almond_water": -25,
+                    "supplies": -20
+                },
+                "stats": {
+                    "morale": -30,
+                    "prestige": 45
+                }
+            }
+        },
+        {
+            "id": "dimensional_resonance",
+            "title": "Risonanza Dimensionale",
+            "description": "Le pareti tra i livelli diventano temporaneamente più sottili.",
+            "effects": {
+                "resources": {
+                    "almond_water": -30,
+                    "fuel": 45
+                },
+                "stats": {
+                    "morale": -10,
+                    "prestige": 30
+                }
+            }
+        },
+        {
+            "id": "level_collapse",
+            "title": "Collasso del Livello",
+            "description": "Un intero livello delle Backrooms sta collassando su se stesso.",
+            "effects": {
+                "resources": {
+                    "almond_water": -40,
+                    "medical": -30,
+                    "supplies": -25
+                },
+                "stats": {
+                    "morale": -25,
+                    "prestige": 50
+                }
+            }
+        },
+        {
+            "id": "entity_evolution",
+            "title": "Evoluzione delle Entità",
+            "description": "Le entità nei livelli inferiori stanno mostrando segni di adattamento e cambiamento.",
+            "effects": {
+                "resources": {
+                    "medical": -45,
+                    "almond_water": -35
+                },
+                "stats": {
+                    "morale": -20,
+                    "prestige": 40
+                }
+            }
+        },
+        {
+            "id": "backrooms_expansion",
+            "title": "Espansione delle Backrooms",
+            "description": "Nuovi livelli si stanno formando, creando opportunità e pericoli.",
+            "effects": {
+                "resources": {
+                    "fuel": -30,
+                    "supplies": 50
+                },
+                "stats": {
+                    "morale": 15,
+                    "prestige": 35
+                }
+            }
         }
     ]
 }

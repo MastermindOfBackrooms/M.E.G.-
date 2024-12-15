@@ -3,14 +3,8 @@
         {
             "id": "explore_level",
             "title": "Esplorazione Livello",
-            "description": "Esplora un'area inesplorata del livello corrente.",
+            "description": "Esplora un'area inesplorata del livello selezionato.",
             "duration": 3,
-            "requirements": {
-                "resources": {
-                    "almond_water": 10,
-                    "supplies": 5
-                }
-            },
             "rewards": {
                 "resources": {
                     "supplies": 15,
@@ -18,7 +12,13 @@
                 },
                 "stats": {
                     "prestige": 5
-                }
+                },
+                "intel_points": 10
+            },
+            "difficulty_multiplier": {
+                "resources": 1.5,
+                "prestige": 2.0,
+                "intel_points": 2.0
             }
         },
         {
@@ -26,17 +26,17 @@
             "title": "Operazione di Soccorso",
             "description": "Salva un gruppo di esploratori dispersi.",
             "duration": 2,
-            "requirements": {
-                "resources": {
-                    "medical": 10,
-                    "fuel": 15
-                }
-            },
             "rewards": {
                 "stats": {
                     "prestige": 10,
                     "morale": 5
-                }
+                },
+                "intel_points": 10
+            },
+            "difficulty_multiplier": {
+                "prestige": 1.5,
+                "morale": 1.2,
+                "intel_points": 1.5
             }
         },
         {
@@ -44,20 +44,1590 @@
             "title": "Sicurezza Avamposto",
             "description": "Stabilisci un nuovo avamposto sicuro.",
             "duration": 5,
-            "requirements": {
-                "resources": {
-                    "supplies": 20,
-                    "fuel": 10,
-                    "almond_water": 15
-                }
-            },
             "rewards": {
                 "resources": {
                     "supplies": 30
                 },
                 "stats": {
                     "prestige": 15
+                },
+                "intel_points": 20
+            },
+            "difficulty_multiplier": {
+                "resources": 1.5,
+                "prestige": 2.0,
+                "intel_points": 2.0
+            }
+        },
+        {
+            "id": "diplomatic_meeting",
+            "title": "Incontro Diplomatico",
+            "description": "Organizza un incontro con rappresentanti di un altro gruppo nelle Backrooms.",
+            "duration": 2,
+            "rewards": {
+                "stats": {
+                    "prestige": 15,
+                    "morale": 10
                 }
+            }
+        },
+        {
+            "id": "entity_research",
+            "title": "Ricerca sulle Entità",
+            "description": "Conduci studi su una nuova entità avvistata nel livello.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "medical": 25
+                },
+                "stats": {
+                    "prestige": 25
+                }
+            }
+        },
+        {
+            "id": "supply_route",
+            "title": "Rotta di Rifornimento",
+            "description": "Stabilisci una nuova rotta sicura per i rifornimenti.",
+            "duration": 3,
+            "rewards": {
+                "resources": {
+                    "supplies": 40,
+                    "fuel": 10
+                },
+                "stats": {
+                    "prestige": 10
+                }
+            }
+        },
+        {
+            "id": "mysterious_signal",
+            "title": "Segnale Misterioso",
+            "description": "Indaga su uno strano segnale rilevato dai sensori della base.",
+            "duration": 2,
+            "rewards": {
+                "resources": {
+                    "supplies": 20
+                },
+                "stats": {
+                    "prestige": 15,
+                    "morale": -10
+                }
+            }
+        },
+        {
+            "id": "resource_gathering",
+            "title": "Raccolta Risorse",
+            "description": "Raccogli risorse specifiche del livello.",
+            "duration": 3,
+            "rewards": {
+                "resources": {
+                    "supplies": 30,
+                    "medical": 15,
+                    "fuel": 20
+                },
+                "stats": {
+                    "prestige": 5
+                }
+            },
+            "difficulty_multiplier": {
+                "resources": 2.0,
+                "prestige": 1.5
+            }
+        },
+        {
+            "id": "level0_mapping",
+            "title": "Mappatura Level 0",
+            "description": "Crea una mappa dettagliata degli uffici infiniti del Level 0.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "almond_water": 10
+                },
+                "stats": {
+                    "prestige": 15
+                },
+                "intel_points": 20
+            },
+            "valid_levels": ["level_0"],
+            "difficulty_multiplier": {
+                "resources": 1.2,
+                "intel_points": 2.0
+            }
+        },
+        {
+            "id": "level1_outpost",
+            "title": "Espansione Level 1",
+            "description": "Espandi la presenza del M.E.G. nei magazzini del Level 1.",
+            "duration": 5,
+            "rewards": {
+                "resources": {
+                    "supplies": 40,
+                    "fuel": 15
+                },
+                "stats": {
+                    "prestige": 20
+                },
+                "intel_points": 15
+            },
+            "valid_levels": ["level_1"],
+            "difficulty_multiplier": {
+                "resources": 1.5,
+                "intel_points": 1.5
+            }
+        },
+        {
+            "id": "level2_maintenance",
+            "title": "Manutenzione Tubi Level 2",
+            "description": "Ripara e mantieni i sistemi di tubature nel Level 2.",
+            "duration": 3,
+            "rewards": {
+                "resources": {
+                    "fuel": 25,
+                    "medical": 10
+                },
+                "stats": {
+                    "prestige": 15
+                },
+                "intel_points": 15
+            },
+            "valid_levels": ["level_2"],
+            "difficulty_multiplier": {
+                "resources": 1.8,
+                "intel_points": 1.5
+            }
+        },
+        {
+            "id": "level3_power",
+            "title": "Gestione Energia Level 3",
+            "description": "Gestisci e controlla i sistemi elettrici pericolosi del Level 3.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "fuel": 30,
+                    "medical": 20
+                },
+                "stats": {
+                    "prestige": 25
+                },
+                "intel_points": 20
+            },
+            "valid_levels": ["level_3"],
+            "difficulty_multiplier": {
+                "resources": 2.0,
+                "intel_points": 2.0
+            }
+        },
+        {
+            "id": "level4_archive",
+            "title": "Archivio Level 4",
+            "description": "Recupera documenti importanti dagli uffici del Level 4.",
+            "duration": 2,
+            "rewards": {
+                "resources": {
+                    "supplies": 20
+                },
+                "stats": {
+                    "prestige": 15
+                },
+                "intel_points": 25
+            },
+            "valid_levels": ["level_4"],
+            "difficulty_multiplier": {
+                "intel_points": 2.5
+            }
+        },
+        {
+            "id": "level5_investigation",
+            "title": "Indagine Hotel Level 5",
+            "description": "Investiga su strani eventi nell'hotel infinito del Level 5.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "almond_water": 15,
+                    "medical": 15
+                },
+                "stats": {
+                    "prestige": 20,
+                    "morale": -5
+                },
+                "intel_points": 30
+            },
+            "valid_levels": ["level_5"],
+            "difficulty_multiplier": {
+                "resources": 1.5,
+                "intel_points": 2.0
+            }
+        },
+        {
+            "id": "level6_darkness",
+            "title": "Esplorazione Oscurità Level 6",
+            "description": "Esplora le profondità oscure del Level 6.",
+            "duration": 3,
+            "rewards": {
+                "resources": {
+                    "fuel": 35,
+                    "medical": 25
+                },
+                "stats": {
+                    "prestige": 30,
+                    "morale": -10
+                },
+                "intel_points": 35
+            },
+            "valid_levels": ["level_6"],
+            "difficulty_multiplier": {
+                "resources": 2.5,
+                "intel_points": 3.0
+            }
+        },
+        {
+            "id": "level7_aquatic",
+            "title": "Missione Acquatica Level 7",
+            "description": "Esplora le acque misteriose del Level 7.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "almond_water": 30,
+                    "medical": 20
+                },
+                "stats": {
+                    "prestige": 35
+                },
+                "intel_points": 30
+            },
+            "valid_levels": ["level_7"],
+            "difficulty_multiplier": {
+                "resources": 2.0,
+                "intel_points": 2.5
+            }
+        },
+        {
+            "id": "level8_crystal",
+            "title": "Raccolta Cristalli Level 8",
+            "description": "Raccogli cristalli rari nelle caverne del Level 8.",
+            "duration": 3,
+            "rewards": {
+                "resources": {
+                    "almond_water": 20,
+                    "supplies": 25
+                },
+                "stats": {
+                    "prestige": 25
+                },
+                "intel_points": 20
+            },
+            "valid_levels": ["level_8"],
+            "difficulty_multiplier": {
+                "resources": 2.0,
+                "intel_points": 1.8
+            }
+        },
+        {
+            "id": "level9_suburban",
+            "title": "Esplorazione Suburbs Level 9",
+            "description": "Esplora il quartiere residenziale infinito e cerca segni di attività anomale nelle case.",
+            "duration": 3,
+            "rewards": {
+                "resources": {
+                    "supplies": 30,
+                    "medical": 15
+                },
+                "stats": {
+                    "prestige": 20
+                },
+                "intel_points": 25
+            },
+            "valid_levels": ["level_9"],
+            "difficulty_multiplier": {
+                "resources": 1.8,
+                "intel_points": 2.0
+            }
+        },
+        {
+            "id": "level10_void",
+            "title": "Missione nel Vuoto Level 10",
+            "description": "Studia il vuoto bianco infinito e raccogli campioni di materia anomala.",
+            "duration": 5,
+            "rewards": {
+                "resources": {
+                    "almond_water": 40
+                },
+                "stats": {
+                    "prestige": 40,
+                    "morale": -15
+                },
+                "intel_points": 45
+            },
+            "valid_levels": ["level_10"],
+            "difficulty_multiplier": {
+                "resources": 3.0,
+                "intel_points": 3.5
+            }
+        },
+        {
+            "id": "level11_diplomacy",
+            "title": "Diplomazia nell'Hub Level 11",
+            "description": "Stabilisci nuovi contatti diplomatici con altri gruppi presenti nell'Hub.",
+            "duration": 2,
+            "rewards": {
+                "resources": {
+                    "supplies": 25,
+                    "medical": 15,
+                    "fuel": 10
+                },
+                "stats": {
+                    "prestige": 30,
+                    "morale": 10
+                },
+                "intel_points": 20
+            },
+            "valid_levels": ["level_11"]
+        },
+        {
+            "id": "level12_conference",
+            "title": "Infiltrazione Conferenza Level 12",
+            "description": "Infiltrati in una misteriosa conferenza per raccogliere informazioni sulle entità.",
+            "duration": 3,
+            "rewards": {
+                "resources": {
+                    "almond_water": 20,
+                    "supplies": 15
+                },
+                "stats": {
+                    "prestige": 25
+                },
+                "intel_points": 35
+            },
+            "valid_levels": ["level_12"],
+            "difficulty_multiplier": {
+                "intel_points": 2.5
+            }
+        },
+        {
+            "id": "level13_garage",
+            "title": "Recupero Veicoli Level 13",
+            "description": "Recupera veicoli funzionanti dal garage infinito per il trasporto risorse.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "fuel": 45,
+                    "supplies": 30
+                },
+                "stats": {
+                    "prestige": 20
+                },
+                "intel_points": 15
+            },
+            "valid_levels": ["level_13"]
+        },
+        {
+            "id": "level14_desert",
+            "title": "Tempesta nel Deserto Level 14",
+            "description": "Raccogli oggetti trasportati dalle tempeste di sabbia anomale.",
+            "duration": 3,
+            "rewards": {
+                "resources": {
+                    "almond_water": 35,
+                    "supplies": 20
+                },
+                "stats": {
+                    "prestige": 25
+                },
+                "intel_points": 30
+            },
+            "valid_levels": ["level_14"],
+            "difficulty_multiplier": {
+                "resources": 2.0,
+                "intel_points": 2.2
+            }
+        },
+        {
+            "id": "level15_mall",
+            "title": "Commercio nel Mall Level 15",
+            "description": "Stabilisci rotte commerciali con i negozi gestiti da entità nel centro commerciale.",
+            "duration": 2,
+            "rewards": {
+                "resources": {
+                    "supplies": 40,
+                    "medical": 20
+                },
+                "stats": {
+                    "prestige": 15,
+                    "morale": 5
+                },
+                "intel_points": 20
+            },
+            "valid_levels": ["level_15"]
+        },
+        {
+            "id": "level16_school",
+            "title": "Ricerca Accademica Level 16",
+            "description": "Recupera conoscenze perdute dalle aule che cambiano posizione.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "supplies": 25,
+                    "almond_water": 15
+                },
+                "stats": {
+                    "prestige": 30
+                },
+                "intel_points": 40
+            },
+            "valid_levels": ["level_16"],
+            "difficulty_multiplier": {
+                "intel_points": 2.8
+            }
+        },
+        {
+            "id": "level17_darkness",
+            "title": "Caccia nell'Oscurità Level 17",
+            "description": "Caccia entità ostili nell'oscurità totale usando tattiche speciali.",
+            "duration": 3,
+            "rewards": {
+                "resources": {
+                    "fuel": 40,
+                    "almond_water": 25
+                },
+                "stats": {
+                    "prestige": 35,
+                    "morale": -10
+                },
+                "intel_points": 30
+            },
+            "valid_levels": ["level_17"],
+            "difficulty_multiplier": {
+                "resources": 2.5,
+                "intel_points": 2.5
+            }
+        },
+        {
+            "id": "level18_archive",
+            "title": "Recupero Documenti Level 18",
+            "description": "Cerca documenti classificati negli archivi infiniti.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "supplies": 20,
+                    "almond_water": 15
+                },
+                "stats": {
+                    "prestige": 25
+                },
+                "intel_points": 45
+            },
+            "valid_levels": ["level_18"],
+            "difficulty_multiplier": {
+                "intel_points": 3.0
+            }
+        },
+        {
+            "id": "level19_hospital",
+            "title": "Cure Paranormali Level 19",
+            "description": "Raccogli strumenti medici anomali e studia le cure paranormali.",
+            "duration": 3,
+            "rewards": {
+                "resources": {
+                    "medical": 50,
+                    "almond_water": 20
+                },
+                "stats": {
+                    "prestige": 30
+                },
+                "intel_points": 25
+            },
+            "valid_levels": ["level_19"],
+            "difficulty_multiplier": {
+                "resources": 2.2,
+                "intel_points": 2.0
+            }
+        },
+        {
+            "id": "level20_garden",
+            "title": "Giardinaggio Impossibile Level 20",
+            "description": "Coltiva e raccogli piante anomale nel cortile con gravità invertita.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "almond_water": 30,
+                    "supplies": 35
+                },
+                "stats": {
+                    "prestige": 25,
+                    "morale": 5
+                },
+                "intel_points": 20
+            },
+            "valid_levels": ["level_20"]
+        },
+        {
+            "id": "level21_maze",
+            "title": "Cartografia del Labirinto Level 21",
+            "description": "Crea una mappa del labirinto con porte che cambiano numero.",
+            "duration": 5,
+            "rewards": {
+                "resources": {
+                    "almond_water": 25,
+                    "supplies": 30
+                },
+                "stats": {
+                    "prestige": 35
+                },
+                "intel_points": 40
+            },
+            "valid_levels": ["level_21"],
+            "difficulty_multiplier": {
+                "intel_points": 2.8
+            }
+        },
+        {
+            "id": "level22_poolrooms",
+            "title": "Campionamento Acque Level 22",
+            "description": "Raccogli campioni dalle piscine infinite per studiarne le proprietà anomale.",
+            "duration": 3,
+            "rewards": {
+                "resources": {
+                    "almond_water": 45,
+                    "medical": 25
+                },
+                "stats": {
+                    "prestige": 30
+                },
+                "intel_points": 35
+            },
+            "valid_levels": ["level_22"],
+            "difficulty_multiplier": {
+                "resources": 2.3,
+                "intel_points": 2.5
+            }
+        },
+        {
+            "id": "level23_lab",
+            "title": "Esperimenti Pericolosi Level 23",
+            "description": "Conduci esperimenti nei laboratori abbandonati e documenta i risultati.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "medical": 40,
+                    "fuel": 30,
+                    "supplies": 25
+                },
+                "stats": {
+                    "prestige": 40,
+                    "morale": -5
+                },
+                "intel_points": 50
+            },
+            "valid_levels": ["level_23"],
+            "difficulty_multiplier": {
+                "resources": 2.5,
+                "intel_points": 3.0
+            }
+        },
+        {
+            "id": "level24_arcade",
+            "title": "Giochi Pericolosi Level 24",
+            "description": "Studia i giochi arcade che mostrano scenari impossibili e raccogli dati.",
+            "duration": 2,
+            "rewards": {
+                "resources": {
+                    "supplies": 20,
+                    "almond_water": 15
+                },
+                "stats": {
+                    "prestige": 20,
+                    "morale": 10
+                },
+                "intel_points": 25
+            },
+            "valid_levels": ["level_24"]
+        },
+        {
+            "id": "level25_radio",
+            "title": "Intercettazione Radio Level 25",
+            "description": "Intercetta e decodifica trasmissioni radio da altre dimensioni.",
+            "duration": 3,
+            "rewards": {
+                "resources": {
+                    "fuel": 25,
+                    "supplies": 20
+                },
+                "stats": {
+                    "prestige": 25
+                },
+                "intel_points": 35
+            },
+            "valid_levels": ["level_25"],
+            "difficulty_multiplier": {
+                "intel_points": 2.4
+            }
+        },
+        {
+            "id": "level26_theatre",
+            "title": "Studio Performance Level 26",
+            "description": "Documenta e analizza gli spettacoli surreali nel teatro infinito.",
+            "duration": 3,
+            "rewards": {
+                "resources": {
+                    "almond_water": 20,
+                    "supplies": 25
+                },
+                "stats": {
+                    "prestige": 30,
+                    "morale": -5
+                },
+                "intel_points": 40
+            },
+            "valid_levels": ["level_26"],
+            "difficulty_multiplier": {
+                "intel_points": 2.6
+            }
+        },
+        {
+            "id": "level27_warehouse",
+            "title": "Recupero Memorie Level 27",
+            "description": "Cerca e cataloga oggetti contenenti memorie perdute nel magazzino infinito.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "supplies": 35,
+                    "fuel": 20
+                },
+                "stats": {
+                    "prestige": 25
+                },
+                "intel_points": 30
+            },
+            "valid_levels": ["level_27"],
+            "difficulty_multiplier": {
+                "resources": 2.0,
+                "intel_points": 2.2
+            }
+        },
+        {
+            "id": "level28_frozen",
+            "title": "Analisi Temporale Level 28",
+            "description": "Studia le email dal futuro nell'ufficio congelato nel tempo.",
+            "duration": 3,
+            "rewards": {
+                "resources": {
+                    "almond_water": 25,
+                    "supplies": 20
+                },
+                "stats": {
+                    "prestige": 35
+                },
+                "intel_points": 45
+            },
+            "valid_levels": ["level_28"],
+            "difficulty_multiplier": {
+                "intel_points": 2.8
+            }
+        },
+        {
+            "id": "level29_assembly",
+            "title": "Produzione Fantasma Level 29",
+            "description": "Analizza il processo di produzione di oggetti che si dissolvono.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "fuel": 35,
+                    "supplies": 30
+                },
+                "stats": {
+                    "prestige": 30
+                },
+                "intel_points": 35
+            },
+            "valid_levels": ["level_29"],
+            "difficulty_multiplier": {
+                "resources": 2.3,
+                "intel_points": 2.4
+            }
+        },
+        {
+            "id": "level30_gravity",
+            "title": "Studio Gravitazionale Level 30",
+            "description": "Conduci esperimenti sulle anomalie gravitazionali del livello.",
+            "duration": 5,
+            "rewards": {
+                "resources": {
+                    "almond_water": 40,
+                    "medical": 30
+                },
+                "stats": {
+                    "prestige": 45,
+                    "morale": -10
+                },
+                "intel_points": 50
+            },
+            "valid_levels": ["level_30"],
+            "difficulty_multiplier": {
+                "resources": 2.8,
+                "intel_points": 3.2
+            }
+        },
+        {
+            "id": "temporal_research",
+            "title": "Ricerca Temporale",
+            "description": "Studia e documenta le anomalie temporali che si verificano nelle Backrooms.",
+            "duration": 5,
+            "rewards": {
+                "resources": {
+                    "almond_water": 35,
+                    "medical": 25
+                },
+                "stats": {
+                    "prestige": 40
+                },
+                "intel_points": 45
+            },
+            "valid_levels": ["level_28", "level_pendulum"],
+            "level_requirements": {
+                "min_knowledge": 3,
+                "max_difficulty": 6
+            },
+            "difficulty_multiplier": {
+                "resources": 2.5,
+                "intel_points": 3.0
+            }
+        },
+        {
+            "id": "reality_stabilization",
+            "title": "Stabilizzazione della Realtà",
+            "description": "Implementa misure per stabilizzare la realtà intorno alla base utilizzando tecnologie sperimentali.",
+            "duration": 6,
+            "rewards": {
+                "resources": {
+                    "almond_water": 45,
+                    "medical": 30,
+                    "fuel": 25
+                },
+                "stats": {
+                    "prestige": 50,
+                    "morale": 15
+                },
+                "intel_points": 40
+            },
+            "valid_levels": ["level_pendulum", "level_omega"],
+            "level_requirements": {
+                "min_knowledge": 4,
+                "max_difficulty": 7
+            },
+            "difficulty_multiplier": {
+                "resources": 3.0,
+                "intel_points": 3.5
+            }
+        },
+        {
+            "id": "almond_spring_research",
+            "title": "Studio Sorgente di Mandorle",
+            "description": "Analizza e proteggi una rara sorgente naturale di acqua di mandorle.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "almond_water": 60,
+                    "supplies": 20
+                },
+                "stats": {
+                    "prestige": 35,
+                    "morale": 10
+                },
+                "intel_points": 30
+            },
+            "level_requirements": {
+                "min_knowledge": 2,
+                "max_difficulty": 5
+            },
+            "difficulty_multiplier": {
+                "resources": 2.0,
+                "intel_points": 2.5
+            }
+        },
+        {
+            "id": "entity_tracking",
+            "title": "Tracciamento Entità",
+            "description": "Segui e documenta i pattern di migrazione delle entità tra i livelli.",
+            "duration": 5,
+            "rewards": {
+                "resources": {
+                    "almond_water": 40,
+                    "medical": 35
+                },
+                "stats": {
+                    "prestige": 45,
+                    "morale": -10
+                },
+                "intel_points": 50
+            },
+            "level_requirements": {
+                "min_knowledge": 4,
+                "max_difficulty": 8
+            },
+            "difficulty_multiplier": {
+                "resources": 2.8,
+                "intel_points": 3.0
+            }
+        },
+        {
+            "id": "reality_anchor_activation",
+            "title": "Attivazione Ancora della Realtà",
+            "description": "Trova e attiva un'antica ancora della realtà per stabilizzare la base.",
+            "duration": 7,
+            "rewards": {
+                "resources": {
+                    "almond_water": 50,
+                    "fuel": 40,
+                    "medical": 30
+                },
+                "stats": {
+                    "prestige": 60,
+                    "morale": 20
+                },
+                "intel_points": 55
+            },
+            "level_requirements": {
+                "min_knowledge": 5,
+                "max_difficulty": 9
+            },
+            "difficulty_multiplier": {
+                "resources": 3.2,
+                "intel_points": 3.5
+            }
+        },
+        {
+            "id": "level_mapping_advanced",
+            "title": "Cartografia Avanzata",
+            "description": "Crea mappe dettagliate di zone inesplorate utilizzando tecnologie sperimentali.",
+            "duration": 6,
+            "rewards": {
+                "resources": {
+                    "fuel": 35,
+                    "supplies": 45
+                },
+                "stats": {
+                    "prestige": 50
+                },
+                "intel_points": 65
+            },
+            "level_requirements": {
+                "min_knowledge": 3,
+                "max_difficulty": 7
+            },
+            "difficulty_multiplier": {
+                "resources": 2.5,
+                "intel_points": 3.8
+            }
+        },
+        {
+            "id": "quantum_stabilization",
+            "title": "Stabilizzazione Quantica",
+            "description": "Sviluppa e implementa contromisure per le oscillazioni quantiche.",
+            "duration": 5,
+            "rewards": {
+                "resources": {
+                    "fuel": 50,
+                    "almond_water": 35
+                },
+                "stats": {
+                    "prestige": 55,
+                    "morale": 15
+                },
+                "intel_points": 45
+            },
+            "level_requirements": {
+                "min_knowledge": 4,
+                "max_difficulty": 8
+            },
+            "difficulty_multiplier": {
+                "resources": 2.8,
+                "intel_points": 3.2
+            }
+        },
+        {
+            "id": "hive_study",
+            "title": "Studio degli Alveari",
+            "description": "Ricerca e documentazione sui comportamenti degli alveari di entità.",
+            "duration": 6,
+            "rewards": {
+                "resources": {
+                    "medical": 45,
+                    "almond_water": 40
+                },
+                "stats": {
+                    "prestige": 65,
+                    "morale": -15
+                },
+                "intel_points": 60
+            },
+            "level_requirements": {
+                "min_knowledge": 5,
+                "max_difficulty": 9
+            },
+            "difficulty_multiplier": {
+                "resources": 3.0,
+                "intel_points": 3.5
+            }
+        },
+        {
+            "id": "resonance_mapping",
+            "title": "Mappatura delle Risonanze",
+            "description": "Mappa e studia i punti di risonanza tra i livelli delle Backrooms.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "fuel": 40,
+                    "almond_water": 30
+                },
+                "stats": {
+                    "prestige": 45
+                },
+                "intel_points": 55
+            },
+            "level_requirements": {
+                "min_knowledge": 3,
+                "max_difficulty": 7
+            },
+            "difficulty_multiplier": {
+                "resources": 2.5,
+                "intel_points": 3.0
+            }
+        },
+        {
+            "id": "collapse_prevention",
+            "title": "Prevenzione del Collasso",
+            "description": "Implementa misure di contenimento per prevenire il collasso dei livelli.",
+            "duration": 7,
+            "rewards": {
+                "resources": {
+                    "almond_water": 55,
+                    "supplies": 40,
+                    "fuel": 35
+                },
+                "stats": {
+                    "prestige": 70,
+                    "morale": 20
+                },
+                "intel_points": 65
+            },
+            "level_requirements": {
+                "min_knowledge": 5,
+                "max_difficulty": 9
+            },
+            "difficulty_multiplier": {
+                "resources": 3.5,
+                "intel_points": 4.0
+            }
+        },
+        {
+            "id": "entity_adaptation_study",
+            "title": "Studio dell'Adattamento",
+            "description": "Studia e documenta l'evoluzione delle entità nei livelli inferiori.",
+            "duration": 6,
+            "rewards": {
+                "resources": {
+                    "medical": 50,
+                    "almond_water": 45
+                },
+                "stats": {
+                    "prestige": 60,
+                    "morale": -15
+                },
+                "intel_points": 70
+            },
+            "level_requirements": {
+                "min_knowledge": 4,
+                "max_difficulty": 8
+            },
+            "difficulty_multiplier": {
+                "resources": 3.0,
+                "intel_points": 3.5
+            }
+        },
+        {
+            "id": "expansion_mapping",
+            "title": "Mappatura dell'Espansione",
+            "description": "Documenta e analizza la formazione di nuovi livelli nelle Backrooms.",
+            "duration": 5,
+            "rewards": {
+                "resources": {
+                    "fuel": 45,
+                    "supplies": 40
+                },
+                "stats": {
+                    "prestige": 55,
+                    "morale": 10
+                },
+                "intel_points": 75
+            },
+            "level_requirements": {
+                "min_knowledge": 3,
+                "max_difficulty": 7
+            },
+            "difficulty_multiplier": {
+                "resources": 2.8,
+                "intel_points": 3.8
+            }
+        },
+        {
+            "id": "skin_stealer_investigation",
+            "title": "Infiltrazione tra gli Skin-Stealers",
+            "description": "Conduci un'indagine approfondita sugli Skin-Stealers e i loro modelli comportamentali.",
+            "duration": 8,
+            "rewards": {
+                "resources": {
+                    "medical": 60,
+                    "almond_water": 50,
+                    "supplies": 45
+                },
+                "stats": {
+                    "prestige": 75,
+                    "morale": -20
+                },
+                "intel_points": 80
+            },
+            "valid_levels": ["level_0", "level_1", "level_3"],
+            "level_requirements": {
+                "min_knowledge": 6,
+                "max_difficulty": 8
+            },
+            "difficulty_multiplier": {
+                "resources": 3.2,
+                "intel_points": 4.0,
+                "prestige": 1.5
+            }
+        },
+        {
+            "id": "smiler_containment",
+            "title": "Contenimento degli Smilers",
+            "description": "Sviluppa e implementa protocolli di contenimento per gli Smilers nel Level 2.",
+            "duration": 7,
+            "rewards": {
+                "resources": {
+                    "fuel": 55,
+                    "medical": 50,
+                    "supplies": 40
+                },
+                "stats": {
+                    "prestige": 70,
+                    "morale": -15
+                },
+                "intel_points": 75
+            },
+            "valid_levels": ["level_2"],
+            "level_requirements": {
+                "min_knowledge": 5,
+                "max_difficulty": 7
+            },
+            "difficulty_multiplier": {
+                "resources": 3.0,
+                "intel_points": 3.8,
+                "prestige": 1.4
+            }
+        },
+        {
+            "id": "almond_water_source",
+            "title": "Fonte dell'Acqua di Mandorle",
+            "description": "Localizza e assicura una nuova fonte di Acqua di Mandorle nelle profondità delle Backrooms.",
+            "duration": 6,
+            "rewards": {
+                "resources": {
+                    "almond_water": 100,
+                    "supplies": 35
+                },
+                "stats": {
+                    "prestige": 50,
+                    "morale": 25
+                },
+                "intel_points": 60
+            },
+            "valid_levels": ["level_7", "level_22"],
+            "level_requirements": {
+                "min_knowledge": 4,
+                "max_difficulty": 6
+            },
+            "difficulty_multiplier": {
+                "resources": 2.8,
+                "intel_points": 3.0,
+                "prestige": 1.3
+            }
+        },
+        {
+            "id": "hound_tracking",
+            "title": "Tracciamento dei Segugi",
+            "description": "Segui e studia i movimenti dei Segugi per comprendere i loro territori di caccia.",
+            "duration": 5,
+            "rewards": {
+                "resources": {
+                    "medical": 45,
+                    "supplies": 40,
+                    "fuel": 35
+                },
+                "stats": {
+                    "prestige": 65,
+                    "morale": -10
+                },
+                "intel_points": 70
+            },
+            "valid_levels": ["level_0", "level_1"],
+            "level_requirements": {
+                "min_knowledge": 3,
+                "max_difficulty": 5
+            },
+            "difficulty_multiplier": {
+                "resources": 2.5,
+                "intel_points": 3.2,
+                "prestige": 1.2
+            }
+        },
+        {
+            "id": "pendulum_investigation",
+            "title": "Oscillazioni della Realtà",
+            "description": "Investiga le anomalie temporali nel Level Pendulum e documenta i suoi effetti sulla realtà.",
+            "duration": 10,
+            "rewards": {
+                "resources": {
+                    "almond_water": 80,
+                    "medical": 70,
+                    "supplies": 60,
+                    "temporal_fragments": 50
+                },
+                "stats": {
+                    "prestige": 100,
+                    "morale": -25
+                },
+                "intel_points": 120
+            },
+            "valid_levels": ["level_pendulum"],
+            "level_requirements": {
+                "min_knowledge": 8,
+                "max_difficulty": 10
+            },
+            "difficulty_multiplier": {
+                "resources": 4.0,
+                "intel_points": 5.0,
+                "prestige": 2.0
+            },
+            "chain_mission": {
+                "next_mission": "omega_breach",
+                "required_intel": 800
+            }
+        },
+        {
+            "id": "omega_breach",
+            "title": "La Breccia Omega",
+            "description": "Esplora il Level Omega e scopri la verità finale sulle Backrooms.",
+            "duration": 14,
+            "rewards": {
+                "resources": {
+                    "pure_almond": 100,
+                    "omega_fragments": 50,
+                    "reality_core": 1
+                },
+                "stats": {
+                    "prestige": 200,
+                    "morale": 50
+                },
+                "intel_points": 250
+            },
+            "valid_levels": ["level_omega"],
+            "level_requirements": {
+                "min_knowledge": 10,
+                "max_difficulty": 12
+            },
+            "difficulty_multiplier": {
+                "resources": 5.0,
+                "intel_points": 6.0,
+                "prestige": 3.0
+            },
+            "prerequisites": {
+                "completed_missions": ["pendulum_investigation"],
+                "min_prestige": 90,
+                "min_intel_total": 1000
+            }
+        },
+        {
+            "id": "deep_exploration",
+            "title": "Gli Abissi del Level 7",
+            "description": "Esplora le profondità inesplorate del Level 7 e documenta le nuove forme di vita acquatiche.",
+            "duration": 8,
+            "rewards": {
+                "resources": {
+                    "almond_water": 70,
+                    "medical": 60,
+                    "supplies": 50,
+                    "aqua_artifacts": 30
+                },
+                "stats": {
+                    "prestige": 85,
+                    "morale": -15
+                },
+                "intel_points": 90
+            },
+            "valid_levels": ["level_7"],
+            "level_requirements": {
+                "min_knowledge": 7,
+                "max_difficulty": 9
+            },
+            "difficulty_multiplier": {
+                "resources": 3.5,
+                "intel_points": 4.2,
+                "prestige": 1.6
+            },
+            "prerequisites": {
+                "completed_missions": ["almond_water_source"],
+                "min_prestige": 70
+            }
+        },
+        {
+            "id": "archive_secrets",
+            "title": "I Segreti degli Archivi",
+            "description": "Recupera documenti classificati dal Level 18 riguardanti l'origine delle Backrooms.",
+            "duration": 6,
+            "rewards": {
+                "resources": {
+                    "almond_water": 50,
+                    "supplies": 40
+                },
+                "stats": {
+                    "prestige": 90,
+                    "morale": 10
+                },
+                "intel_points": 100,
+                "classified_documents": 1
+            },
+            "valid_levels": ["level_18"],
+            "level_requirements": {
+                "min_knowledge": 6,
+                "max_difficulty": 7
+            },
+            "difficulty_multiplier": {
+                "resources": 3.0,
+                "intel_points": 4.5,
+                "prestige": 1.7
+            }
+        },
+        {
+            "id": "entity_alliance",
+            "title": "Alleanza con le Entità",
+            "description": "Stabilisci un patto di non aggressione con le entità senzienti del Level 11.",
+            "duration": 10,
+            "rewards": {
+                "resources": {
+                    "almond_water": 90,
+                    "medical": 80,
+                    "supplies": 70,
+                    "entity_artifacts": 40
+                },
+                "stats": {
+                    "prestige": 120,
+                    "morale": 30
+                },
+                "intel_points": 150
+            },
+            "valid_levels": ["level_11"],
+            "level_requirements": {
+                "min_knowledge": 8,
+                "max_difficulty": 8
+            },
+            "difficulty_multiplier": {
+                "resources": 3.8,
+                "intel_points": 4.8,
+                "prestige": 2.0
+            },
+            "prerequisites": {
+                "completed_missions": ["skin_stealer_investigation", "smiler_containment"],
+                "min_prestige": 85,
+                "min_intel_total": 800
+            }
+        },
+        {
+            "id": "network_expansion",
+            "title": "Espansione della Rete M.E.G.",
+            "description": "Stabilisci avamposti M.E.G. in più livelli per espandere l'influenza dell'organizzazione.",
+            "duration": 12,
+            "rewards": {
+                "resources": {
+                    "almond_water": 100,
+                    "medical": 90,
+                    "supplies": 80,
+                    "fuel": 70
+                },
+                "stats": {
+                    "prestige": 150,
+                    "morale": 40
+                },
+                "intel_points": 200
+            },
+            "valid_levels": ["level_0", "level_1", "level_11"],
+            "level_requirements": {
+                "min_knowledge": 7,
+                "max_difficulty": 8
+            },
+            "difficulty_multiplier": {
+                "resources": 4.0,
+                "intel_points": 5.0,
+                "prestige": 2.5
+            },
+            "prerequisites": {
+                "completed_missions": ["entity_alliance"],
+                "min_prestige": 100,
+                "min_intel_total": 900
+            }
+        },
+        {
+            "id": "reality_stabilization",
+            "title": "Stabilizzazione della Realtà",
+            "description": "Coordina un'operazione su larga scala per stabilizzare le anomalie spazio-temporali in più livelli.",
+            "duration": 15,
+            "rewards": {
+                "resources": {
+                    "almond_water": 120,
+                    "medical": 100,
+                    "supplies": 90,
+                    "fuel": 85,
+                    "reality_anchors": 3
+                },
+                "stats": {
+                    "prestige": 180,
+                    "morale": 50
+                },
+                "intel_points": 250
+            },
+            "valid_levels": ["level_pendulum", "level_30", "level_omega"],
+            "level_requirements": {
+                "min_knowledge": 9,
+                "max_difficulty": 11
+            },
+            "difficulty_multiplier": {
+                "resources": 4.5,
+                "intel_points": 5.5,
+                "prestige": 3.0
+            },
+            "prerequisites": {
+                "completed_missions": ["pendulum_investigation", "network_expansion"],
+                "min_prestige": 120,
+                "min_intel_total": 1200
+            }
+        },
+        {
+            "id": "ancient_knowledge",
+            "title": "Conoscenza Antica",
+            "description": "Recupera e decifra antichi documenti sparsi in vari livelli delle Backrooms per svelare i suoi segreti.",
+            "duration": 10,
+            "rewards": {
+                "resources": {
+                    "almond_water": 85,
+                    "supplies": 75,
+                    "ancient_artifacts": 5
+                },
+                "stats": {
+                    "prestige": 160,
+                    "morale": 35
+                },
+                "intel_points": 220
+            },
+            "valid_levels": ["level_18", "level_omega", "level_pendulum"],
+            "level_requirements": {
+                "min_knowledge": 8,
+                "max_difficulty": 10
+            },
+            "difficulty_multiplier": {
+                "resources": 4.2,
+                "intel_points": 5.2,
+                "prestige": 2.8
+            },
+            "prerequisites": {
+                "completed_missions": ["archive_secrets"],
+                "min_prestige": 110,
+                "min_intel_total": 1000
+            }
+        },
+        {
+            "id": "smiler_containment",
+            "title": "Contenimento degli Smilers",
+            "description": "Sviluppa e implementa protocolli di contenimento per gli Smilers nel Level 2.",
+            "duration": 7,
+            "rewards": {
+                "resources": {
+                    "fuel": 55,
+                    "medical": 50,
+                    "supplies": 40
+                },
+                "stats": {
+                    "prestige": 70,
+                    "morale": -15
+                },
+                "intel_points": 75
+            },
+            "valid_levels": ["level_2"],
+            "level_requirements": {
+                "min_knowledge": 5,
+                "max_difficulty": 7
+            },
+            "difficulty_multiplier": {
+                "resources": 3.0,
+                "intel_points": 3.8,
+                "prestige": 1.4
+            }
+        },
+        {
+            "id": "almond_water_source",
+            "title": "Fonte dell'Acqua di Mandorle",
+            "description": "Localizza e assicura una nuova fonte di Acqua di Mandorle nelle profondità delle Backrooms.",
+            "duration": 6,
+            "rewards": {
+                "resources": {
+                    "almond_water": 100,
+                    "supplies": 35
+                },
+                "stats": {
+                    "prestige": 50,
+                    "morale": 25
+                },
+                "intel_points": 60
+            },
+            "valid_levels": ["level_7", "level_22"],
+            "level_requirements": {
+                "min_knowledge": 4,
+                "max_difficulty": 6
+            },
+            "difficulty_multiplier": {
+                "resources": 2.8,
+                "intel_points": 3.0,
+                "prestige": 1.3
+            }
+        },
+        {
+            "id": "hound_tracking",
+            "title": "Tracciamento dei Segugi",
+            "description": "Segui e studia i movimenti dei Segugi per comprendere i loro territori di caccia.",
+            "duration": 5,
+            "rewards": {
+                "resources": {
+                    "medical": 45,
+                    "supplies": 40,
+                    "fuel": 35
+                },
+                "stats": {
+                    "prestige": 65,
+                    "morale": -10
+                },
+                "intel_points": 70
+            },
+            "valid_levels": ["level_0", "level_1"],
+            "level_requirements": {
+                "min_knowledge": 3,
+                "max_difficulty": 5
+            },
+            "difficulty_multiplier": {
+                "resources": 2.5,
+                "intel_points": 3.2,
+                "prestige": 1.2
+            }
+        },
+        {
+            "id": "time_anomaly",
+            "title": "Anomalie dell'Ufficio Congelato",
+            "description": "Investiga le strane anomalie temporali scoperte nel Level 28, dove il tempo sembra comportarsi in modi impossibili.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "almond_water": 50,
+                    "supplies": 40,
+                    "temporal_fragments": 10
+                },
+                "stats": {
+                    "prestige": 60,
+                    "morale": 15
+                },
+                "intel_points": 80
+            },
+            "valid_levels": ["level_28"],
+            "level_requirements": {
+                "min_knowledge": 4,
+                "max_difficulty": 6
+            },
+            "difficulty_multiplier": {
+                "resources": 2.8,
+                "intel_points": 3.5,
+                "prestige": 1.4
+            },
+            "chain_mission": {
+                "next_mission": "pendulum_mystery",
+                "required_intel": 200
+            }
+        },
+        {
+            "id": "pendulum_mystery",
+            "title": "Il Mistero del Pendolo",
+            "description": "Le anomalie temporali portano al misterioso Level Pendulum. Scopri la connessione tra i due livelli.",
+            "duration": 6,
+            "rewards": {
+                "resources": {
+                    "almond_water": 70,
+                    "supplies": 55,
+                    "temporal_fragments": 25,
+                    "reality_shards": 15
+                },
+                "stats": {
+                    "prestige": 85,
+                    "morale": 25
+                },
+                "intel_points": 120
+            },
+            "valid_levels": ["level_pendulum"],
+            "level_requirements": {
+                "min_knowledge": 6,
+                "max_difficulty": 8
+            },
+            "difficulty_multiplier": {
+                "resources": 3.2,
+                "intel_points": 4.0,
+                "prestige": 1.8
+            },
+            "prerequisites": {
+                "completed_missions": ["time_anomaly"],
+                "min_prestige": 70
+            },
+            "chain_mission": {
+                "next_mission": "temporal_convergence",
+                "required_intel": 400
+            }
+        },
+        {
+            "id": "temporal_convergence",
+            "title": "Convergenza Temporale",
+            "description": "Le indagini conducono al Level Omega, dove tutte le linee temporali convergono. Scopri la verità dietro le anomalie temporali.",
+            "duration": 8,
+            "rewards": {
+                "resources": {
+                    "pure_almond": 100,
+                    "temporal_fragments": 50,
+                    "reality_shards": 30,
+                    "reality_core": 1
+                },
+                "stats": {
+                    "prestige": 150,
+                    "morale": 40
+                },
+                "intel_points": 200
+            },
+            "valid_levels": ["level_omega"],
+            "level_requirements": {
+                "min_knowledge": 8,
+                "max_difficulty": 10
+            },
+            "difficulty_multiplier": {
+                "resources": 4.0,
+                "intel_points": 5.0,
+                "prestige": 2.5
+            },
+            "prerequisites": {
+                "completed_missions": ["time_anomaly", "pendulum_mystery"],
+                "min_prestige": 90,
+                "min_intel_total": 800
             }
         }
     ]
