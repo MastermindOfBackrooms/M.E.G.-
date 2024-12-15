@@ -24,6 +24,10 @@ git clone https://github.com/MastermindOfBackrooms/M.E.G.-Manager
 
 cd meg-base-manager
 
+visto che questo è un README.md a prova di domande : per avviare python3 main.py quindi dovete essere dentro la cartella principale con main.py 
+se non sapete come mostrare la lista di files per sapere se c'è main.py basta vedere con : ls
+LE DIPENDENZE VANNO INSTALLATE PRIMA DI AVVIARE
+
 Installa le dipendenze:
 pip install rich
 
