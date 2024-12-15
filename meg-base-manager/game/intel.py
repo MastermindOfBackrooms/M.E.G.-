@@ -15,8 +15,8 @@ class LevelIntel:
         old_level = self.knowledge_level
         
         # Calcola il nuovo livello di conoscenza
-        # Richiede più punti per ogni livello successivo
-        threshold = [10, 25, 50, 100, 200]
+        # Richiede significativamente più punti per ogni livello successivo
+        threshold = [25, 75, 150, 300, 500]  # Aumentate le soglie
         for level, required in enumerate(threshold, 1):
             if self.intel_points >= required:
                 self.knowledge_level = level
@@ -59,18 +59,27 @@ class IntelSystem:
             if intel.knowledge_level >= 1:
                 info["difficulty"] = level_data["difficulty"]
                 info["danger_level"] = level_data["danger_level"]
+                info["environmental_hazards"] = level_data.get("environmental_hazards", ["Sconosciuto"])
                 
             if intel.knowledge_level >= 2:
                 info["entities"] = level_data["entities"]
+                info["entity_behaviors"] = level_data.get("entity_behaviors", {})
+                info["safe_zones"] = level_data.get("safe_zones", ["Sconosciuto"])
                 
             if intel.knowledge_level >= 3:
                 info["resources"] = level_data["resources"]
+                info["resource_locations"] = level_data.get("resource_locations", {})
+                info["survival_tips"] = level_data.get("survival_tips", [])
                 
             if intel.knowledge_level >= 4:
                 info["special_items"] = level_data["special_items"]
+                info["anomalies"] = level_data.get("anomalies", [])
+                info["exit_points"] = level_data.get("exit_points", [])
                 
             if include_secrets and intel.knowledge_level >= 5:
                 info["discovered_secrets"] = intel.discovered_secrets
+                info["hidden_passages"] = level_data.get("hidden_passages", [])
+                info["rare_encounters"] = level_data.get("rare_encounters", [])
                 
             return info
             

@@ -314,23 +314,39 @@ class DefenseSystem:
             return None
         return structures[number - 1]
         
-    def build_structure(self, struct_number: int, game_state) -> bool:
+    def build_structure(self, struct_number: int, game_state) -> Dict:
+        """Costruisce una struttura se non è già stata costruita e ci sono abbastanza risorse"""
         structure = self.get_structure_by_number(struct_number)
         if not structure:
-            return False
-        
+            return {"success": False, "message": "Numero struttura non valido"}
+            
+        # Verifica se la struttura è già stata costruita
+        if any(s.name == structure.name for s in self.structures):
+            return {"success": False, "message": f"[ERRORE] La struttura '{structure.name}' è già stata costruita e non può essere duplicata!"}
+            
         # Verifica risorse
+        missing_resources = []
         for resource, amount in structure.resource_cost.items():
             if game_state.resources.get(resource) < amount:
-                return False
+                missing_resources.append(f"{resource}: {amount - game_state.resources.get(resource)}")
                 
+        if missing_resources:
+            return {"success": False, "message": f"Risorse insufficienti:\n" + "\n".join(missing_resources)}
+            
         # Consuma risorse
         for resource, amount in structure.resource_cost.items():
             game_state.resources.modify(resource, -amount)
             
         self.structures.append(structure)
         self.defense_rating += structure.defense_bonus
-        return True
+        
+        # Aggiorna anche gli altri bonus
+        game_state.stats.morale += structure.morale_bonus
+        
+        return {
+            "success": True,
+            "message": f"Struttura '{structure.name}' costruita con successo!\nBonus difesa: +{structure.defense_bonus}\nBonus morale: +{structure.morale_bonus}"
+        }
         
     def to_dict(self) -> Dict:
         return {

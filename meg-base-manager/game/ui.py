@@ -48,6 +48,7 @@ class UI:
         
         table.add_row("Prestigio", str(self.game.stats.prestige))
         table.add_row("Morale", str(self.game.stats.morale))
+        table.add_row("Rank", f"[bold]{self.game.stats.rank}[/]")
         
         self.console.print(table)
         
@@ -97,11 +98,10 @@ class UI:
         """Mostra le missioni disponibili usando pannelli"""
         self.console.print("\n[bold green]═══ MISSIONI DISPONIBILI ═══[/]")
         
-        # Seleziona casualmente 8 missioni
-        available_missions = self.game.missions.missions
-        displayed_missions = available_missions if len(available_missions) <= 8 else random.sample(available_missions, 8)
-        
-        for idx, mission in enumerate(displayed_missions, 1):
+        # Le missioni giornaliere verranno rigenerate solo quando necessario
+        self.game.missions.generate_daily_missions(force=False)
+            
+        for idx, mission in enumerate(self.game.missions.daily_missions, 1):
             # Formatta le ricompense
             rewards = []
             for category, items in mission.rewards.items():
@@ -142,7 +142,14 @@ class UI:
             self.console.print(active_table)
         
     def get_input(self, prompt: str = "> ") -> str:
-        return self.console.input(prompt)
+        try:
+            return self.console.input(prompt)
+        except (EOFError, KeyboardInterrupt):
+            print("\nUscita dal gioco...")
+            exit(0)
+        except Exception as e:
+            print(f"\nErrore durante l'input: {e}")
+            return ""
         
     def show_error(self, message: str):
         self.console.print(f"[bold red]Errore:[/] {message}")
@@ -477,15 +484,20 @@ class UI:
         
         self.console.print(stats_table)
         
-        # Mostra strutture disponibili
+        # Mostra strutture disponibili (non ancora costruite)
         available_table = Table(title="\nStrutture Disponibili")
         available_table.add_column("ID", style="dim")
         available_table.add_column("Nome", style="cyan")
+        available_table.add_column("Stato", style="yellow")
         available_table.add_column("Bonus", justify="left")
         available_table.add_column("Costo", justify="right")
         available_table.add_column("Produzione", justify="right")
         
-        for idx, (struct_id, struct) in enumerate(self.game.defense.available_structures.items(), 1):
+        built_structures = {s.name for s in self.game.defense.structures}
+        available_structures = [(id, s) for id, s in self.game.defense.available_structures.items() 
+                              if s.name not in built_structures]
+        
+        for idx, (struct_id, struct) in enumerate(available_structures, 1):
             # Prepara lista bonus
             bonuses = []
             if struct.defense_bonus: bonuses.append(f"Difesa +{struct.defense_bonus}")
@@ -506,9 +518,14 @@ class UI:
                 else:
                     production.append(f"{amount} {resource}")
             
+            # Verifica se la struttura è già stata costruita
+            is_built = struct.name in {s.name for s in self.game.defense.structures}
+            status = "[red]Già Costruita[/]" if is_built else "[green]Disponibile[/]"
+            
             available_table.add_row(
                 str(idx),
                 struct.name,
+                status,
                 "\n".join(bonuses),
                 "\n".join(costs),
                 "\n".join(production) if production else "-"

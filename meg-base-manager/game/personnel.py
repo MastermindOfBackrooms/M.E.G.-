@@ -40,6 +40,19 @@ class Personnel:
         self.max_agents = 10
         self.roles = self.load_roles()
         
+        # Lista di nomi per la generazione casuale
+        self.nomi = [
+            "Alex", "Blake", "Cameron", "Drew", "Ellis", "Francis", "Glen", "Harper",
+            "Ian", "Jordan", "Kennedy", "Logan", "Morgan", "Noah", "Owen", "Parker",
+            "Quinn", "Riley", "Sam", "Taylor", "Uri", "Val", "Winter", "Xavier",
+            "Yuri", "Zion", "Ash", "Bailey", "Casey", "Dale", "Eden", "Finley",
+            "Gray", "Hayden", "Indie", "Jamie", "Kai", "Lake", "Maven", "Noel"
+        ]
+        
+        # Ruoli disponibili per il personale
+        self.ruoli_disponibili = ["explorer", "researcher", "combat_specialist", "medic", 
+                               "diplomat", "engineer", "survivalist", "psychologist", "scout"]
+        
     def load_roles(self) -> Dict:
         with open("data/roles.json") as f:
             data = json.load(f)
@@ -134,36 +147,30 @@ class Personnel:
         self.max_agents = data["max_agents"]
         self.agents = [Agent(**agent_data) for agent_data in data["agents"]]
         
+    def add_random_agent(self) -> bool:
+        """Aggiunge un nuovo agente casuale quando si raggiunge un nuovo rank"""
+        if len(self.agents) >= self.max_agents:
+            return False
+            
+        # Scegli un nome casuale non utilizzato
+        used_names = {agent.name.split()[0] for agent in self.agents}
+        available_names = [name for name in self.nomi if name not in used_names]
+        
+        if not available_names:
+            # Se tutti i nomi sono stati usati, aggiungi un numero al nome
+            nome_base = random.choice(self.nomi)
+            counter = 1
+            while f"{nome_base} {counter}" in used_names:
+                counter += 1
+            nome_finale = f"{nome_base} {counter}"
+        else:
+            nome_finale = random.choice(available_names)
+            
+        # Scegli un ruolo casuale
+        ruolo = random.choice(self.ruoli_disponibili)
+        
+        # Assumi il nuovo agente
+        return self.hire_agent(nome_finale, ruolo)
+        
     def reset(self):
         self.agents = []
-        
-        # Lista di 40 nomi inglesi per la generazione casuale
-        nomi = [
-            "Alex", "Blake", "Cameron", "Drew", "Ellis", "Francis", "Glen", "Harper",
-            "Ian", "Jordan", "Kennedy", "Logan", "Morgan", "Noah", "Owen", "Parker",
-            "Quinn", "Riley", "Sam", "Taylor", "Uri", "Val", "Winter", "Xavier",
-            "Yuri", "Zion", "Ash", "Bailey", "Casey", "Dale", "Eden", "Finley",
-            "Gray", "Hayden", "Indie", "Jamie", "Kai", "Lake", "Maven", "Noel"
-        ]
-        
-        # Ruoli disponibili per il personale iniziale
-        ruoli_disponibili = ["explorer", "researcher", "combat_specialist", "medic", 
-                           "diplomat", "engineer", "survivalist", "psychologist", "scout"]
-        
-        # Mantieni traccia dei nomi usati e delle loro occorrenze
-        nomi_usati = {}
-        
-        # Genera 5 agenti casuali con statistiche bilanciate
-        for _ in range(5):
-            nome_base = random.choice(nomi)
-            
-            # Gestisci i duplicati aggiungendo un numero
-            if nome_base in nomi_usati:
-                nomi_usati[nome_base] += 1
-                nome_finale = f"{nome_base} {nomi_usati[nome_base]}"
-            else:
-                nomi_usati[nome_base] = 1
-                nome_finale = nome_base
-                
-            ruolo = random.choice(ruoli_disponibili)
-            self.hire_agent(nome_finale, ruolo)
