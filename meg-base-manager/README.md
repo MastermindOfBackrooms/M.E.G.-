@@ -40,3 +40,9 @@ Mantieni buone relazioni diplomatiche con le altre organizzazioni
 Sopravvivi agli eventi casuali delle Backrooms
 👥 Crediti
 Creato con ❤️ da Jashin L.
+
+1.0 beta
+problemi in fase di risoluzione
+- missioni
+- livelli
+- risorse
