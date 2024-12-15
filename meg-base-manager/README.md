@@ -47,3 +47,9 @@ problemi in fase di risoluzione
 - missioni
 - livelli
 - risorse
+
+possibili implementazioni :
+caricamenti
+obiettivi
+aggiunta livelli anomali
+aggiunta sistema diplomazia ancora più complesso
