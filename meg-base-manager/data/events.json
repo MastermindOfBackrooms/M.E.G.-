@@ -1,0 +1,47 @@
+{
+    "events": [
+        {
+            "id": "entity_attack",
+            "title": "Attacco di Entità",
+            "description": "Una entità ostile ha attaccato la base.",
+            "effects": {
+                "resources": {
+                    "medical": -10,
+                    "supplies": -5
+                },
+                "stats": {
+                    "morale": -10
+                }
+            }
+        },
+        {
+            "id": "supply_cache",
+            "title": "Deposito Scoperto",
+            "description": "I nostri esploratori hanno trovato un deposito di rifornimenti.",
+            "effects": {
+                "resources": {
+                    "almond_water": 20,
+                    "food": 15,
+                    "supplies": 10
+                },
+                "stats": {
+                    "morale": 5
+                }
+            }
+        },
+        {
+            "id": "wanderer_arrival",
+            "title": "Arrivo di Vagabondi",
+            "description": "Un gruppo di vagabondi chiede rifugio nella base.",
+            "effects": {
+                "resources": {
+                    "food": -10,
+                    "almond_water": -5
+                },
+                "stats": {
+                    "prestige": 5
+                }
+            }
+        }
+    ]
+}

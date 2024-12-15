@@ -1,0 +1,121 @@
+{
+    "roles": [
+        {
+            "id": "explorer",
+            "name": "Esploratore",
+            "description": "Specialista nell'esplorazione dei livelli delle Backrooms",
+            "base_stats": {
+                "combat": 2,
+                "research": 1,
+                "survival": 3,
+                "diplomacy": 1,
+                "medical": 1
+            },
+            "special_ability": "Mappatura Avanzata"
+        },
+        {
+            "id": "researcher",
+            "name": "Ricercatore",
+            "description": "Studia i fenomeni delle Backrooms e sviluppa nuove tecnologie",
+            "base_stats": {
+                "combat": 1,
+                "research": 4,
+                "survival": 1,
+                "diplomacy": 1,
+                "medical": 2
+            },
+            "special_ability": "Analisi Entità"
+        },
+        {
+            "id": "combat_specialist",
+            "name": "Specialista da Combattimento",
+            "description": "Addestrato per affrontare le entità ostili",
+            "base_stats": {
+                "combat": 4,
+                "research": 1,
+                "survival": 2,
+                "diplomacy": 1,
+                "medical": 1
+            },
+            "special_ability": "Tattiche Avanzate"
+        },
+        {
+            "id": "medic",
+            "name": "Medico",
+            "description": "Esperto in cure e primi soccorsi",
+            "base_stats": {
+                "combat": 1,
+                "research": 2,
+                "survival": 1,
+                "diplomacy": 2,
+                "medical": 4
+            },
+            "special_ability": "Cure d'Emergenza"
+        },
+        {
+            "id": "diplomat",
+            "name": "Diplomatico",
+            "description": "Specializzato nelle relazioni con altri gruppi",
+            "base_stats": {
+                "combat": 1,
+                "research": 2,
+                "survival": 1,
+                "diplomacy": 4,
+                "medical": 1
+            },
+            "special_ability": "Negoziazione"
+        },
+        {
+            "id": "engineer",
+            "name": "Ingegnere",
+            "description": "Esperto in manutenzione e costruzione",
+            "base_stats": {
+                "combat": 1,
+                "research": 3,
+                "survival": 2,
+                "diplomacy": 1,
+                "medical": 1
+            },
+            "special_ability": "Riparazione Avanzata"
+        },
+        {
+            "id": "survivalist",
+            "name": "Survivalista",
+            "description": "Specializzato nella sopravvivenza a lungo termine",
+            "base_stats": {
+                "combat": 2,
+                "research": 1,
+                "survival": 4,
+                "diplomacy": 1,
+                "medical": 1
+            },
+            "special_ability": "Razionamento"
+        },
+        {
+            "id": "psychologist",
+            "name": "Psicologo",
+            "description": "Esperto in salute mentale e gestione dello stress",
+            "base_stats": {
+                "combat": 1,
+                "research": 2,
+                "survival": 1,
+                "diplomacy": 3,
+                "medical": 2
+            },
+            "special_ability": "Supporto Mentale"
+        },
+        {
+            "id": "scout",
+            "name": "Ricognitore",
+            "description": "Specializzato in missioni rapide di ricognizione",
+            "base_stats": {
+                "combat": 2,
+                "research": 1,
+                "survival": 3,
+                "diplomacy": 1,
+                "medical": 1
+            },
+            "special_ability": "Infiltrazione"
+        }
+    ]
+}

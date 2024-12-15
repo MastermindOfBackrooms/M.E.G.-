@@ -1,0 +1,64 @@
+{
+    "missions": [
+        {
+            "id": "explore_level",
+            "title": "Esplorazione Livello",
+            "description": "Esplora un'area inesplorata del livello corrente.",
+            "duration": 3,
+            "requirements": {
+                "resources": {
+                    "almond_water": 10,
+                    "supplies": 5
+                }
+            },
+            "rewards": {
+                "resources": {
+                    "supplies": 15,
+                    "almond_water": 5
+                },
+                "stats": {
+                    "prestige": 5
+                }
+            }
+        },
+        {
+            "id": "rescue_operation",
+            "title": "Operazione di Soccorso",
+            "description": "Salva un gruppo di esploratori dispersi.",
+            "duration": 2,
+            "requirements": {
+                "resources": {
+                    "medical": 10,
+                    "fuel": 15
+                }
+            },
+            "rewards": {
+                "stats": {
+                    "prestige": 10,
+                    "morale": 5
+                }
+            }
+        },
+        {
+            "id": "secure_outpost",
+            "title": "Sicurezza Avamposto",
+            "description": "Stabilisci un nuovo avamposto sicuro.",
+            "duration": 5,
+            "requirements": {
+                "resources": {
+                    "supplies": 20,
+                    "fuel": 10,
+                    "almond_water": 15
+                }
+            },
+            "rewards": {
+                "resources": {
+                    "supplies": 30
+                },
+                "stats": {
+                    "prestige": 15
+                }
+            }
+        }
+    ]
+}
