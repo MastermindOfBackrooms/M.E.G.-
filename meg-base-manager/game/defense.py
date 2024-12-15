@@ -1,6 +1,10 @@
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 import random
+from dataclasses import dataclass
+from typing import Dict, List, Optional
+import random
+from .events import Event, EventManager  # Importazione corretta di Event ed EventManager
 
 @dataclass
 class DefenseStructure:
@@ -16,6 +20,7 @@ class DefenseStructure:
     specialist_bonus: Dict[str, float] = field(default_factory=dict)  # Bonus basati sulle specializzazioni
     daily_production: Dict[str, int] = field(default_factory=dict)  # Risorse prodotte ogni giorno
     
+
 class DefenseSystem:
     def __init__(self):
         self.alert_level: int = 1  # Da 1 a 5
@@ -29,29 +34,32 @@ class DefenseSystem:
             "radio_tower": DefenseStructure(
                 "Torre Radio",
                 1,
-                defense_bonus=2,
-                diplomatic_bonus=5,
-                morale_bonus=3,
+                defense_bonus=3,
+                diplomatic_bonus=7,
+                morale_bonus=5,
                 resource_cost={"supplies": 30, "fuel": 20},
-                specialist_bonus={"diplomat": 1.2, "engineer": 1.1},
-                daily_production={"supplies": 2}  # Attrae sopravvissuti che portano rifornimenti
+                specialist_bonus={"diplomat": 1.5, "engineer": 1.3, "explorer": 1.2},
+                daily_production={"supplies": 3, "almond_water": 1}  # Attrae sopravvissuti che portano rifornimenti
             ),
             "walls": DefenseStructure(
                 "Mura Rinforzate",
                 1,
-                defense_bonus=5,
-                survival_bonus=2,
-                resource_cost={"supplies": 20},
-                specialist_bonus={"combat_specialist": 1.2, "engineer": 1.1},
-                daily_production={"almond_water": 1}  # Raccolta acqua piovana
+                defense_bonus=8,
+                survival_bonus=4,
+                morale_bonus=2,
+                resource_cost={"supplies": 25, "fuel": 10},
+                specialist_bonus={"combat_specialist": 1.4, "engineer": 1.3, "survivalist": 1.2},
+                daily_production={"almond_water": 2, "supplies": 1}  # Raccolta acqua piovana e detriti utili
             ),
             "turrets": DefenseStructure(
                 "Torrette Difensive",
                 1,
-                defense_bonus=7,
-                resource_cost={"supplies": 25, "fuel": 15},
-                specialist_bonus={"combat_specialist": 1.3, "engineer": 1.2},
-                daily_production={"supplies": 1}  # Raccolta risorse da entità eliminate
+                defense_bonus=10,
+                survival_bonus=3,
+                morale_bonus=2,
+                resource_cost={"supplies": 30, "fuel": 20},
+                specialist_bonus={"combat_specialist": 1.5, "engineer": 1.3, "scout": 1.2},
+                daily_production={"supplies": 2, "fuel": 1}  # Raccolta risorse da entità eliminate
             ),
             
             # Strutture di Monitoraggio
@@ -107,13 +115,23 @@ class DefenseSystem:
             ),
             
             # Strutture Diplomatiche
+            "meeting_hall": DefenseStructure(
+                "Sala Riunioni",
+                1,
+                diplomatic_bonus=3,
+                morale_bonus=3,
+                resource_cost={"supplies": 15},
+                specialist_bonus={"diplomat": 1.2, "psychologist": 1.1},
+                daily_production={"morale": 1}  # Migliora il morale quotidiano
+            ),
             "embassy": DefenseStructure(
                 "Ambasciata",
                 1,
                 diplomatic_bonus=10,
                 morale_bonus=5,
                 resource_cost={"supplies": 50, "medical": 20, "almond_water": 25},
-                specialist_bonus={"diplomat": 2.0, "psychologist": 1.5}
+                specialist_bonus={"diplomat": 2.0, "psychologist": 1.5},
+                daily_production={"supplies": 4, "medical": 2}  # Aiuti diplomatici da altre fazioni
             ),
             "comm_center": DefenseStructure(
                 "Centro Comunicazioni",
@@ -121,7 +139,8 @@ class DefenseSystem:
                 diplomatic_bonus=5,
                 morale_bonus=2,
                 resource_cost={"supplies": 20, "fuel": 15},
-                specialist_bonus={"diplomat": 1.4}
+                specialist_bonus={"diplomat": 1.4},
+                daily_production={"intel_points": 1}  # Genera informazioni sui livelli
             ),
             "meeting_hall": DefenseStructure(
                 "Sala Riunioni",
@@ -146,22 +165,92 @@ class DefenseSystem:
                 research_bonus=4,
                 resource_cost={"supplies": 20},
                 specialist_bonus={"researcher": 1.2, "explorer": 1.1}
+            ),
+            
+            # Strutture Base
+            "dormitory": DefenseStructure(
+                "Dormitori",
+                1,
+                morale_bonus=8,
+                resource_cost={"supplies": 35, "almond_water": 15},
+                specialist_bonus={"psychologist": 1.3, "engineer": 1.2},
+                daily_production={"morale": 2}  # Bonus giornaliero al morale
+            ),
+            "canteen": DefenseStructure(
+                "Mensa",
+                1,
+                morale_bonus=5,
+                survival_bonus=3,
+                resource_cost={"supplies": 30, "food": 20},
+                specialist_bonus={"survivalist": 1.3, "medic": 1.2},
+                daily_production={"food": -2, "morale": 1}  # Riduce il consumo di cibo
+            ),
+            "recreation": DefenseStructure(
+                "Area Ricreativa",
+                1,
+                morale_bonus=10,
+                diplomatic_bonus=2,
+                resource_cost={"supplies": 25, "fuel": 10},
+                specialist_bonus={"psychologist": 1.4, "diplomat": 1.2},
+                daily_production={"morale": 3}  # Forte bonus al morale
+            ),
+            "warehouse": DefenseStructure(
+                "Magazzino",
+                1,
+                survival_bonus=5,
+                resource_cost={"supplies": 40, "fuel": 15},
+                specialist_bonus={"engineer": 1.3, "survivalist": 1.2},
+                daily_production={"supplies": 2}  # Produzione base di rifornimenti
             )
         }
         
     def increase_alert(self):
+        """Aumenta il livello di allerta e applica gli effetti"""
         if self.alert_level < 5:
+            old_level = self.alert_level
             self.alert_level += 1
+            effects = {
+                "old_level": old_level,
+                "new_level": self.alert_level,
+                "morale_effect": -5,  # Riduce il morale
+                "defense_bonus": 5,   # Aumenta la difesa
+                "resource_multiplier": 1.2  # Aumenta il consumo di risorse
+            }
+            return effects
+        return None
             
     def decrease_alert(self):
+        """Diminuisce il livello di allerta e applica gli effetti"""
         if self.alert_level > 1:
+            old_level = self.alert_level
             self.alert_level -= 1
+            effects = {
+                "old_level": old_level,
+                "new_level": self.alert_level,
+                "morale_effect": 5,   # Aumenta il morale
+                "defense_bonus": -5,  # Diminuisce la difesa
+                "resource_multiplier": 0.9  # Diminuisce il consumo di risorse
+            }
+            return effects
+        return None
             
     def get_total_defense(self) -> int:
+        """Calcola la difesa totale considerando l'allerta"""
         base_defense = self.defense_rating
         structure_bonus = sum(s.defense_bonus for s in self.structures)
-        alert_bonus = self.alert_level * 2
+        # Il bonus di allerta ora è più significativo
+        alert_bonus = self.alert_level * 5  # Ogni livello dà +5 alla difesa
         return base_defense + structure_bonus + alert_bonus
+        
+    def get_alert_effects(self) -> dict:
+        """Restituisce gli effetti attuali del livello di allerta"""
+        return {
+            "defense_bonus": self.alert_level * 5,
+            "resource_multiplier": 1 + (self.alert_level - 1) * 0.2,
+            "morale_effect": (3 - self.alert_level) * 5,  # Più alto l'allerta, più basso il morale
+            "infiltration_resistance": self.alert_level * 10,  # Resistenza alle infiltrazioni
+            "event_probability": self.alert_level * 0.1  # Probabilità di eventi casuali
+        }
         
     def get_research_bonus(self, personnel) -> int:
         """Calcola il bonus totale alla ricerca considerando le strutture e le specializzazioni"""
@@ -274,18 +363,38 @@ class DefenseSystem:
         self.__init__()
     def daily_update(self, game_state):
         """Aggiorna il progresso della ricerca, genera intel points e gestisce produzione"""
-        # Gestione ricerca
+        # Ottieni effetti dell'allerta
+        alert_effects = self.get_alert_effects()
+        
+        # Applica effetti dell'allerta al morale
+        game_state.stats.morale = max(0, min(100, 
+            game_state.stats.morale + alert_effects["morale_effect"]))
+        
+        # Gestione ricerca (modificata dall'allerta)
         research_power = sum(s.research_bonus for s in self.structures)
         if research_power > 0:
-            self.research_progress += research_power * 0.1
+            # L'allerta alta riduce l'efficienza della ricerca
+            research_modifier = 2 - (alert_effects["resource_multiplier"] * 0.5)
+            self.research_progress += research_power * 0.1 * research_modifier
             while self.research_progress >= 10:
                 self.research_progress -= 10
                 game_state.intel.add_intel_points("level_0", 5, "Ricerca")
                 
-        # Produzione giornaliera delle strutture
+        # Produzione giornaliera delle strutture (influenzata dall'allerta)
         for structure in self.structures:
             for resource, amount in structure.daily_production.items():
-                game_state.resources.modify(resource, amount)
+                if resource == "morale":
+                    final_amount = amount * (2 - alert_effects["resource_multiplier"])
+                    game_state.stats.morale = min(100, 
+                        game_state.stats.morale + final_amount)
+                elif resource == "intel_points":
+                    game_state.intel.add_intel_points("level_0", amount, 
+                        f"Produzione {structure.name}")
+                else:
+                    # Consumo risorse aumenta con l'allerta alta
+                    if amount < 0:  # Se è un consumo
+                        amount = amount * alert_effects["resource_multiplier"]
+                    game_state.resources.modify(resource, amount)
                 
         # Sistema di infiltrazione
         if random.random() < 0.1:  # 10% di chance giornaliera di infiltrazione

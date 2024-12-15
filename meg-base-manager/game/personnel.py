@@ -73,12 +73,33 @@ class Personnel:
         return True
         
     def fire_agent(self, agent_id: str) -> bool:
+        """Licenzia volontariamente un agente"""
         agent = self.get_agent(agent_id)
         if agent:
             self.agents.remove(agent)
             return True
         return False
         
+    def remove_agent(self, agent_id: str) -> bool:
+        """Rimuove un agente (per morte o altre cause forzate)"""
+        return self.fire_agent(agent_id)
+        
+    def increase_agent_experience(self, agent_id: str, amount: int = 1) -> bool:
+        """Aumenta l'esperienza di un agente"""
+        agent = self.get_agent(agent_id)
+        if agent:
+            agent.gain_exp(amount)
+            return True
+        return False
+        
+    def free_agent(self, agent_id: str) -> bool:
+        """Libera un agente da una missione e lo rende disponibile"""
+        agent = self.get_agent(agent_id)
+        if agent:
+            agent.status = "disponibile"
+            return True
+        return False
+
     def get_agent(self, agent_id: str) -> Agent:
         return next((a for a in self.agents if a.id == agent_id), None)
         

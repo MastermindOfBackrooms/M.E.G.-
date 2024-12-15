@@ -2,6 +2,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from rich import box
+import random
 from .base import GameState
 from .saves import SaveManager
 
@@ -91,83 +92,40 @@ class UI:
             )
             
         self.console.print(table)
-        
-    def show_defense(self):
-        """Mostra lo stato del sistema difensivo"""
-        table = Table(title="Strutture della Base")
-        table.add_column("Statistica", style="cyan")
-        table.add_column("Valore", justify="right")
-        
-        table.add_row("Livello Allerta", str(self.game.defense.alert_level))
-        table.add_row("Difesa Totale", str(self.game.defense.get_total_defense()))
-        table.add_row("Bonus Ricerca", str(self.game.defense.get_research_bonus(self.game.personnel)))
-        table.add_row("Bonus Medico", str(self.game.defense.get_medical_bonus(self.game.personnel)))
-        table.add_row("Bonus Diplomatico", str(self.game.defense.get_diplomatic_bonus(self.game.personnel)))
-        table.add_row("Bonus Sopravvivenza", str(self.game.defense.get_survival_bonus(self.game.personnel)))
-        table.add_row("Bonus Morale", str(self.game.defense.get_morale_bonus(self.game.personnel)))
-        
-        self.console.print(table)
-        
-        if self.game.defense.structures:
-            struct_table = Table(title="Strutture della Base")
-            struct_table.add_column("Nome")
-            struct_table.add_column("Livello", justify="right")
-            struct_table.add_column("Bonus", justify="right")
-            struct_table.add_column("Specialisti", justify="right")
-            
-            for struct in self.game.defense.structures:
-                bonus_list = []
-                if struct.defense_bonus: bonus_list.append(f"Difesa: +{struct.defense_bonus}")
-                if struct.research_bonus: bonus_list.append(f"Ricerca: +{struct.research_bonus}")
-                if struct.medical_bonus: bonus_list.append(f"Medico: +{struct.medical_bonus}")
-                if struct.diplomatic_bonus: bonus_list.append(f"Diplomatico: +{struct.diplomatic_bonus}")
-                if struct.survival_bonus: bonus_list.append(f"Sopravvivenza: +{struct.survival_bonus}")
-                if struct.morale_bonus: bonus_list.append(f"Morale: +{struct.morale_bonus}")
-                
-                specialists = []
-                if struct.specialist_bonus:
-                    for role, bonus in struct.specialist_bonus.items():
-                        specialists.append(f"{role}: x{bonus}")
-                
-                struct_table.add_row(
-                    struct.name,
-                    str(struct.level),
-                    "\n".join(bonus_list),
-                    "\n".join(specialists)
-                )
-            
-            self.console.print("\n")
-            self.console.print(struct_table)
 
     def show_missions(self):
-        table = Table(title="Missioni Disponibili")
-        table.add_column("Numero", style="cyan", justify="right")
-        table.add_column("Titolo", style="cyan")
-        table.add_column("Descrizione")
-        table.add_column("Durata", justify="right")
-        table.add_column("Requisiti")
-        table.add_column("Ricompense")
+        """Mostra le missioni disponibili usando pannelli"""
+        self.console.print("\n[bold green]═══ MISSIONI DISPONIBILI ═══[/]")
         
-        for idx, mission in enumerate(self.game.missions.missions, 1):
-            reqs = []
-            for resource, amount in mission.requirements.get("resources", {}).items():
-                reqs.append(f"{resource}: {amount}")
-            
+        # Seleziona casualmente 8 missioni
+        available_missions = self.game.missions.missions
+        displayed_missions = available_missions if len(available_missions) <= 8 else random.sample(available_missions, 8)
+        
+        for idx, mission in enumerate(displayed_missions, 1):
+            # Formatta le ricompense
             rewards = []
             for category, items in mission.rewards.items():
-                for item, amount in items.items():
-                    rewards.append(f"{item}: {amount}")
+                if isinstance(items, dict):
+                    for item, amount in items.items():
+                        rewards.append(f"[yellow]{item.replace('_', ' ').title()}: {amount}[/]")
+                else:
+                    rewards.append(f"[yellow]{category.replace('_', ' ').title()}: {items}[/]")
             
-            table.add_row(
-                str(idx),
-                mission.title,
-                mission.description,
-                str(mission.duration),
-                "\n".join(reqs),
-                "\n".join(rewards)
+            # Crea un pannello per ogni missione
+            mission_text = (
+                f"[bold cyan]Missione #{idx}:[/] [bold white]{mission.title}[/]\n"
+                f"[dim]STATUS:[/] [green]Disponibile[/]  [dim]DURATA:[/] [blue]{mission.duration}g[/]\n"
+                f"\n[dim]DESCRIZIONE:[/]\n{mission.description}\n"
+                f"\n[dim]RICOMPENSE:[/]\n" + "\n".join(rewards)
             )
-        
-        self.console.print(table)
+            
+            self.console.print(Panel(
+                mission_text,
+                border_style="blue",
+                expand=False,
+                padding=(1, 2)
+            ))
+            self.console.print("")  # Aggiunge spazio tra le missioni
         
         if self.game.missions.active_missions:
             active_table = Table(title="Missioni Attive")
@@ -262,49 +220,36 @@ class UI:
                         
             elif choice == "4":
                 self.show_defense()
-                
-                self.console.print("\n[bold cyan]Azioni Difesa[/]")
-                self.console.print("1. Costruisci Struttura")
-                self.console.print("2. Modifica Livello Allerta")
-                self.console.print("3. Torna al Menu")
-                
                 defense_choice = self.get_input()
                 
                 if defense_choice == "1":
-                    # Mostra strutture disponibili
-                    self.console.print("\n[bold]Strutture Disponibili[/]")
-                    for i, struct in enumerate(self.game.defense.available_structures.values(), 1):
-                        cost_str = ", ".join(f"{r}: {a}" for r, a in struct.resource_cost.items())
-                        self.console.print(f"{i}. {struct.name}")
-                        self.console.print(f"  Costo: {cost_str}")
-                        self.console.print(f"  Bonus Difesa: {struct.defense_bonus}")
-                        if struct.daily_production:
-                            prod_str = ", ".join(f"{r}: {a}/giorno" for r, a in struct.daily_production.items())
-                            self.console.print(f"  Produzione: {prod_str}")
-                        self.console.print("")
-                    
                     try:
-                        struct_num = int(self.get_input("\nInserisci il numero della struttura: "))
+                        struct_num = int(self.get_input("Inserisci il numero della struttura da costruire: "))
                         if self.game.defense.build_structure(struct_num, self.game):
                             self.console.print("[green]Struttura costruita con successo![/]")
                         else:
-                            self.show_error("Impossibile costruire la struttura. Controlla risorse e numero.")
+                            self.show_error("Risorse insufficienti o struttura non valida")
                     except ValueError:
-                        self.show_error("Inserisci un numero valido.")
-                        
+                        self.show_error("Inserisci un numero valido")
                 elif defense_choice == "2":
-                    self.console.print(f"\nLivello Allerta attuale: {self.game.defense.alert_level}")
-                    self.console.print("1. Aumenta Livello")
-                    self.console.print("2. Diminuisci Livello")
-                    
+                    self.console.print("\n1. Aumenta Livello Allerta")
+                    self.console.print("2. Diminuisci Livello Allerta")
                     alert_choice = self.get_input()
+                    effects = None
                     if alert_choice == "1":
-                        self.game.defense.increase_alert()
-                        self.console.print("[yellow]Livello allerta aumentato![/]")
+                        effects = self.game.defense.increase_alert()
                     elif alert_choice == "2":
-                        self.game.defense.decrease_alert()
-                        self.console.print("[green]Livello allerta diminuito.[/]")
-
+                        effects = self.game.defense.decrease_alert()
+                        
+                    if effects:
+                        self.console.print(f"\n[bold yellow]Livello Allerta cambiato da {effects['old_level']} a {effects['new_level']}[/]")
+                        self.console.print(f"Effetti:")
+                        self.console.print(f"- Morale: {effects['morale_effect']:+}")
+                        self.console.print(f"- Difesa: {effects['defense_bonus']:+}")
+                        self.console.print(f"- Consumo Risorse: x{effects['resource_multiplier']:.1f}")
+                    else:
+                        self.console.print("[yellow]Livello di allerta non può essere modificato ulteriormente.[/]")
+                        
             elif choice == "5":
                 self.show_intel()
             elif choice == "6":
@@ -510,3 +455,100 @@ class UI:
             
             self.console.print("\n")
             self.console.print(event_table)
+
+    def show_defense(self):
+        """Mostra lo stato del sistema difensivo e le strutture disponibili"""
+        # Mostra statistiche di difesa
+        stats_table = Table(title="Statistiche Difensive")
+        stats_table.add_column("Statistica", style="cyan")
+        stats_table.add_column("Valore", justify="right")
+        
+        alert_effects = self.game.defense.get_alert_effects()
+        stats_table.add_row("Livello Allerta", f"{self.game.defense.alert_level}/5")
+        stats_table.add_row("Difesa Totale", str(self.game.defense.get_total_defense()))
+        stats_table.add_row("Effetto Morale", f"{alert_effects['morale_effect']:+}")
+        stats_table.add_row("Consumo Risorse", f"x{alert_effects['resource_multiplier']:.1f}")
+        stats_table.add_row("Resistenza Infiltrazioni", f"{alert_effects['infiltration_resistance']}%")
+        stats_table.add_row("Bonus Ricerca", str(self.game.defense.get_research_bonus(self.game.personnel)))
+        stats_table.add_row("Bonus Medico", str(self.game.defense.get_medical_bonus(self.game.personnel)))
+        stats_table.add_row("Bonus Diplomatico", str(self.game.defense.get_diplomatic_bonus(self.game.personnel)))
+        stats_table.add_row("Bonus Sopravvivenza", str(self.game.defense.get_survival_bonus(self.game.personnel)))
+        stats_table.add_row("Bonus Morale", str(self.game.defense.get_morale_bonus(self.game.personnel)))
+        
+        self.console.print(stats_table)
+        
+        # Mostra strutture disponibili
+        available_table = Table(title="\nStrutture Disponibili")
+        available_table.add_column("ID", style="dim")
+        available_table.add_column("Nome", style="cyan")
+        available_table.add_column("Bonus", justify="left")
+        available_table.add_column("Costo", justify="right")
+        available_table.add_column("Produzione", justify="right")
+        
+        for idx, (struct_id, struct) in enumerate(self.game.defense.available_structures.items(), 1):
+            # Prepara lista bonus
+            bonuses = []
+            if struct.defense_bonus: bonuses.append(f"Difesa +{struct.defense_bonus}")
+            if struct.research_bonus: bonuses.append(f"Ricerca +{struct.research_bonus}")
+            if struct.medical_bonus: bonuses.append(f"Medico +{struct.medical_bonus}")
+            if struct.diplomatic_bonus: bonuses.append(f"Diplomatico +{struct.diplomatic_bonus}")
+            if struct.survival_bonus: bonuses.append(f"Sopravvivenza +{struct.survival_bonus}")
+            if struct.morale_bonus: bonuses.append(f"Morale +{struct.morale_bonus}")
+            
+            # Prepara costi
+            costs = [f"{amount} {resource}" for resource, amount in struct.resource_cost.items()]
+            
+            # Prepara produzione
+            production = []
+            for resource, amount in struct.daily_production.items():
+                if amount > 0:
+                    production.append(f"+{amount} {resource}")
+                else:
+                    production.append(f"{amount} {resource}")
+            
+            available_table.add_row(
+                str(idx),
+                struct.name,
+                "\n".join(bonuses),
+                "\n".join(costs),
+                "\n".join(production) if production else "-"
+            )
+            
+        self.console.print(available_table)
+        
+        # Menu azioni
+        self.console.print("\n[bold cyan]Azioni Strutture[/]")
+        self.console.print("1. Costruisci Struttura")
+        self.console.print("2. Modifica Livello Allerta")
+        self.console.print("3. Torna al Menu")
+        
+        if self.game.defense.structures:
+            struct_table = Table(title="Strutture della Base")
+            struct_table.add_column("Nome")
+            struct_table.add_column("Livello", justify="right")
+            struct_table.add_column("Bonus", justify="right")
+            struct_table.add_column("Specialisti", justify="right")
+            
+            for struct in self.game.defense.structures:
+                bonus_list = []
+                if struct.defense_bonus: bonus_list.append(f"Difesa: +{struct.defense_bonus}")
+                if struct.research_bonus: bonus_list.append(f"Ricerca: +{struct.research_bonus}")
+                if struct.medical_bonus: bonus_list.append(f"Medico: +{struct.medical_bonus}")
+                if struct.diplomatic_bonus: bonus_list.append(f"Diplomatico: +{struct.diplomatic_bonus}")
+                if struct.survival_bonus: bonus_list.append(f"Sopravvivenza: +{struct.survival_bonus}")
+                if struct.morale_bonus: bonus_list.append(f"Morale: +{struct.morale_bonus}")
+                
+                specialists = []
+                if struct.specialist_bonus:
+                    for role, bonus in struct.specialist_bonus.items():
+                        specialists.append(f"{role}: x{bonus}")
+                
+                struct_table.add_row(
+                    struct.name,
+                    str(struct.level),
+                    "\n".join(bonus_list),
+                    "\n".join(specialists)
+                )
+            
+            self.console.print("\n")
+            self.console.print(struct_table)

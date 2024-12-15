@@ -63,6 +63,6 @@ class GameState:
                 self.resources.from_dict(data["resources"])
                 self.personnel.from_dict(data["personnel"])
                 self.missions.from_dict(data["missions"])
-                self.intel.from_dict(data["intel"])
+            self.intel.from_dict(data["intel"])
         except FileNotFoundError:
             raise ValueError("Salvataggio non trovato")
