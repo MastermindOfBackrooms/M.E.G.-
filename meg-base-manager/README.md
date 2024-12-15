@@ -41,12 +41,14 @@ Sopravvivi agli eventi casuali delle Backrooms
 👥 Crediti
 Creato con ❤️ da Jashin L.
 
-1.0 beta test
+1.1 beta test
 
-problemi in fase di risoluzione
+v1.0 problemi in fase di risoluzione
 - missioni (risolto)
 - livelli (risolto)
 - risorse (risolto)
+
+v1.1 nessun problema rilevato al momento
 
 possibili implementazioni :
 
