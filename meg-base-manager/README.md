@@ -44,17 +44,17 @@ Creato con ❤️ da Jashin L.
 1.0 beta test
 
 problemi in fase di risoluzione
-- missioni
-- livelli
-- risorse
+- missioni (risolto)
+- livelli (risolto)
+- risorse (risolto)
 
 possibili implementazioni :
 
-caricamenti
+caricamenti (dimenticatevelo)
 
-obiettivi
+obiettivi ( prossimamente )
 
-aggiunta livelli anomali
+aggiunta livelli anomali ( completato)
 
-aggiunta sistema diplomazia ancora più complesso
+aggiunta sistema diplomazia ancora più complesso (in arrivo)
 
