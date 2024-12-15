@@ -20,8 +20,7 @@ Un gioco gestionale testuale in italiano sulla gestione di una base M.E.G. nelle
 ## 📥 Installazione
 
 1. Clona il repository:
-```bash
-git clone https://github.com/[tuo-username]/meg-base-manager.git
+git clone https://github.com/MastermindOfBackrooms/M.E.G.-Manager
 cd meg-base-manager
 
 Installa le dipendenze:
