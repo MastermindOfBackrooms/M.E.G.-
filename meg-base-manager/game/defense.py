@@ -343,6 +343,11 @@ class DefenseSystem:
         # Aggiorna anche gli altri bonus
         game_state.stats.morale += structure.morale_bonus
         
+        # Se viene costruita l'ambasciata, abilita la diplomazia
+        if structure.name == "Ambasciata":
+            game_state.diplomacy.embassy_built = True
+            game_state.diplomacy.initialize_organizations()
+        
         return {
             "success": True,
             "message": f"Struttura '{structure.name}' costruita con successo!\nBonus difesa: +{structure.defense_bonus}\nBonus morale: +{structure.morale_bonus}"

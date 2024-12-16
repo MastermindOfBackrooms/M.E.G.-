@@ -4,7 +4,7 @@ from typing import List, Dict
 
 class Mission:
     def __init__(self, id: str, title: str, description: str, duration: int,
-                 rewards: Dict, valid_levels: str | List[str] = "all",
+                 rewards: Dict, valid_levels: str | List[str] | None = None,
                  level_requirements: Dict = None, difficulty_multiplier: Dict = None,
                  chain_mission: Dict = None, prerequisites: Dict = None):
         self.id = id
@@ -12,8 +12,8 @@ class Mission:
         self.description = description
         self.duration = duration
         self.rewards = rewards
-        self.valid_levels = valid_levels
-        self.level_requirements = level_requirements or {"min_knowledge": 0, "max_difficulty": 5}
+        self.valid_levels = valid_levels  # Ora può essere None per missioni senza livello
+        self.level_requirements = level_requirements  # Opzionale
         self.difficulty_multiplier = difficulty_multiplier or {}
         self.chain_mission = chain_mission or {}
         self.prerequisites = prerequisites or {}
@@ -56,7 +56,7 @@ class MissionManager:
         self.generate_daily_missions()  # Genera le prime missioni giornaliere
         
     def generate_daily_missions(self, force=False):
-        """Genera 8 nuove missioni giornaliere casuali
+        """Genera 8 nuove missioni giornaliere casuali, includendo missioni concatenate quando disponibili
         
         Args:
             force (bool): Se True, forza la rigenerazione anche se ci sono ancora missioni
@@ -68,8 +68,36 @@ class MissionManager:
                                 if m not in self.active_missions and 
                                 not hasattr(m, 'completed_today')]
             
+            # Cerca missioni concatenate attualmente disponibili
+            chain_missions = [m for m in self.missions 
+                            if hasattr(m, 'chain_mission') and m.chain_mission and 
+                            m.id in [am.chain_mission.get('next_mission') for am in self.active_missions 
+                                   if hasattr(am, 'chain_mission') and am.chain_mission]]
+            
+            # Rimuove le missioni concatenate non ancora sbloccate dalla pool disponibile
+            available_missions = [m for m in available_missions 
+                                if m not in chain_missions or 
+                                any(am.chain_mission and am.chain_mission.get('next_mission') == m.id 
+                                    for am in self.active_missions)]
+            
             if available_missions:
-                selected_missions = random.sample(available_missions, min(8, len(available_missions)))
+                # Assicura che le missioni concatenate disponibili siano incluse
+                selected_missions = []
+                remaining_slots = 8
+                
+                # Aggiunge prima le missioni concatenate disponibili
+                for chain_mission in chain_missions:
+                    if chain_mission in available_missions and remaining_slots > 0:
+                        selected_missions.append(chain_mission)
+                        available_missions.remove(chain_mission)
+                        remaining_slots -= 1
+                
+                # Riempie i restanti slot con missioni casuali
+                if remaining_slots > 0 and available_missions:
+                    random_missions = random.sample(available_missions, 
+                                                 min(remaining_slots, len(available_missions)))
+                    selected_missions.extend(random_missions)
+                
                 for mission in selected_missions:
                     mission.completed_today = False
                 self.daily_missions = selected_missions
@@ -98,7 +126,11 @@ class MissionManager:
         return None
         
     def select_valid_level(self, mission: Mission, game_state) -> str:
-        """Seleziona un livello valido per la missione"""
+        """Seleziona un livello valido per la missione se possibile"""
+        # Se non ci sono requisiti di livello, restituisci None
+        if not mission.valid_levels or mission.valid_levels == []:
+            return None
+            
         valid_levels = []
         all_levels = list(game_state.intel.levels_intel.keys())
         
@@ -110,27 +142,73 @@ class MissionManager:
             if not level_info:
                 continue
                 
-            # Verifica requisiti del livello
-            knowledge_level = game_state.intel.levels_intel[level_id].knowledge_level
-            if knowledge_level < mission.level_requirements["min_knowledge"]:
-                continue
-                
-            if "difficulty" in level_info:
-                if level_info["difficulty"] > mission.level_requirements["max_difficulty"]:
+            # Verifica requisiti del livello se presenti
+            if mission.level_requirements:
+                knowledge_level = game_state.intel.levels_intel[level_id].knowledge_level
+                if knowledge_level < mission.level_requirements["min_knowledge"]:
                     continue
+                    
+                if "difficulty" in level_info:
+                    if level_info["difficulty"] > mission.level_requirements["max_difficulty"]:
+                        continue
                     
             valid_levels.append(level_id)
             
+        # Se non ci sono livelli validi, la missione può procedere senza un livello specifico
         if not valid_levels:
             return None
             
         return random.choice(valid_levels)
+
+    def check_prerequisites(self, mission: Mission, game_state) -> tuple[bool, str]:
+        """Verifica se i prerequisiti della missione sono soddisfatti"""
+        if not mission.prerequisites:
+            return True, ""
+            
+        # Verifica missioni completate richieste
+        if "completed_missions" in mission.prerequisites:
+            for required_mission_id in mission.prerequisites["completed_missions"]:
+                completed = any(m.id == required_mission_id and m.completed 
+                              for m in self.missions)
+                if not completed:
+                    return False, f"Richiede il completamento della missione: {required_mission_id}"
+        
+        # Verifica prestigio minimo
+        if "min_prestige" in mission.prerequisites:
+            if game_state.stats.prestige < mission.prerequisites["min_prestige"]:
+                return False, f"Richiede prestigio minimo: {mission.prerequisites['min_prestige']}"
+                
+        # Verifica intel totale minimo
+        if "min_intel_total" in mission.prerequisites:
+            total_intel = sum(level.intel_points for level in game_state.intel.levels_intel.values())
+            if total_intel < mission.prerequisites["min_intel_total"]:
+                return False, f"Richiede punti intel totali: {mission.prerequisites['min_intel_total']}"
+                
+        # Verifica corruzione minima se presente
+        if "min_corruption" in mission.prerequisites:
+            if not hasattr(game_state.stats, "corruption") or \
+               game_state.stats.corruption < mission.prerequisites["min_corruption"]:
+                return False, f"Richiede corruzione minima: {mission.prerequisites['min_corruption']}"
+                
+        # Verifica agenti persi se richiesto
+        if "lost_agents" in mission.prerequisites:
+            if not hasattr(game_state.stats, "lost_agents") or \
+               game_state.stats.lost_agents < mission.prerequisites["lost_agents"]:
+                return False, f"Richiede {mission.prerequisites['lost_agents']} agenti persi"
+                
+        return True, ""
 
     def start_mission(self, mission_number: int, agent_id: str, game_state) -> Dict:
         if not 1 <= mission_number <= len(self.daily_missions):
             return {"success": False, "message": "Numero missione non valido"}
             
         mission = self.daily_missions[mission_number - 1]
+        
+        # Verifica prerequisiti
+        prerequisites_met, error_message = self.check_prerequisites(mission, game_state)
+        if not prerequisites_met:
+            return {"success": False, "message": f"Prerequisiti non soddisfatti: {error_message}"}
+            
         # Rimuove la missione dalle missioni giornaliere
         if mission in self.daily_missions:
             self.daily_missions.remove(mission)
@@ -143,29 +221,38 @@ class MissionManager:
         if not agent or agent.status != "disponibile":
             return {"success": False, "message": "Agente non disponibile"}
             
-        # Seleziona un livello valido
+        # Seleziona un livello valido se possibile
         selected_level = self.select_valid_level(mission, game_state)
-        if not selected_level:
-            return {"success": False, "message": "Nessun livello disponibile per questa missione"}
-            
-        # Ottieni informazioni sul livello
-        level_info = game_state.intel.get_level_info(selected_level)
-        level_difficulty = level_info.get("difficulty", 1)
-            
+        level_difficulty = 1
+        
+        # Se c'è un livello selezionato, ottieni le sue informazioni
+        if selected_level:
+            level_info = game_state.intel.get_level_info(selected_level)
+            if level_info:
+                level_difficulty = level_info.get("difficulty", 1)
+                
         # Assegna agente alla missione
         game_state.personnel.assign_mission(agent_id, mission.title)
         
-        # Calcola ricompense basate sulla difficoltà
+        # Calcola ricompense basate sulla difficoltà (se c'è un livello) o usa valori base
         mission.adjusted_rewards = mission.calculate_rewards(level_difficulty)
         
         mission.assigned_agent = agent_id
         mission.selected_level = selected_level
         self.active_missions.append(mission)
         
+        # Prepara il messaggio di successo appropriato
+        if selected_level and 'level_info' in locals():
+            success_message = f"Missione avviata con {agent.name} nel {level_info['name']}"
+            level_name = level_info['name']
+        else:
+            success_message = f"Missione avviata con {agent.name}"
+            level_name = "nessun livello specifico"
+
         return {
             "success": True,
-            "message": f"Missione avviata con {agent.name} nel {level_info['name']}",
-            "level": level_info['name'],
+            "message": success_message,
+            "level": level_name,
             "difficulty": level_difficulty
         }
         
@@ -188,6 +275,41 @@ class MissionManager:
         
         # Aumentato il range di probabilità
         return max(0.05, min(0.75, final_probability))  # Limita tra 5% e 75%
+
+    def check_chain_mission_requirements(self, mission: Mission, game_state) -> bool:
+        """Verifica se i requisiti per sbloccare la prossima missione della catena sono soddisfatti"""
+        if not mission.chain_mission:
+            return False
+            
+        if "required_intel" in mission.chain_mission:
+            # Verifica se il livello ha abbastanza punti intel
+            if mission.selected_level:
+                level_intel = game_state.intel.levels_intel.get(mission.selected_level)
+                if level_intel and level_intel.intel_points >= mission.chain_mission["required_intel"]:
+                    return True
+        return False
+
+    def unlock_next_chain_mission(self, mission: Mission):
+        """Sblocca la prossima missione nella catena e fornisce feedback dettagliato"""
+        if not mission.chain_mission or "next_mission" not in mission.chain_mission:
+            return
+            
+        next_mission_id = mission.chain_mission["next_mission"]
+        next_mission = next((m for m in self.missions if m.id == next_mission_id), None)
+        
+        if next_mission and next_mission not in self.daily_missions:
+            self.daily_missions.append(next_mission)
+            print(f"\n[bold green]Nuova missione sbloccata nella catena![/]")
+            print(f"Titolo: {next_mission.title}")
+            print(f"Descrizione: {next_mission.description}")
+            if next_mission.prerequisites:
+                print("\nPrerequisiti:")
+                if "min_prestige" in next_mission.prerequisites:
+                    print(f"- Prestigio minimo richiesto: {next_mission.prerequisites['min_prestige']}")
+                if "min_intel_total" in next_mission.prerequisites:
+                    print(f"- Punti intel totali richiesti: {next_mission.prerequisites['min_intel_total']}")
+            print("\nQuesta missione è collegata alla catena di eventi in corso.")
+            print("Completala per svelare ulteriori misteri delle Backrooms.")
 
     def update_missions(self, game_state):
         completed = []
@@ -270,6 +392,10 @@ class MissionManager:
                             f"Missione: {mission.title}"
                         )
                         print(f"- Intel Points: +{points} per livello {mission.selected_level}")
+                        
+                        # Controlla se si può sbloccare la prossima missione della catena
+                        if self.check_chain_mission_requirements(mission, game_state):
+                            self.unlock_next_chain_mission(mission)
                 
                 # Libera l'agente se è sopravvissuto
                 if mission.assigned_agent:

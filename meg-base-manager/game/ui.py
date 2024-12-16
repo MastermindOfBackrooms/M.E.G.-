@@ -37,9 +37,10 @@ class UI:
         self.console.print("4. Strutture")
         self.console.print("5. Intelligence")
         self.console.print("6. Diplomazia")
-        self.console.print("7. Avanza Giorno")
-        self.console.print("8. Salva")
-        self.console.print("9. Torna al Menu")
+        self.console.print("7. Mercato")
+        self.console.print("8. Avanza Giorno")
+        self.console.print("9. Salva")
+        self.console.print("0. Torna al Menu")
         
     def show_stats(self):
         table = Table(title=f"Giorno {self.game.stats.day}")
@@ -262,13 +263,15 @@ class UI:
             elif choice == "6":
                 self.show_diplomacy()
             elif choice == "7":
+                self.show_market()
+            elif choice == "8":
                 self.game.advance_day()
                 self.show_daily_report()
-            elif choice == "8":
+            elif choice == "9":
                 save_name = self.get_input("Nome del salvataggio: ")
                 self.game.save_game(save_name)
                 self.console.print("[green]Gioco salvato![/]")
-            elif choice == "9":
+            elif choice == "0":
                 if self.confirm_exit():
                     break
             else:
@@ -462,6 +465,195 @@ class UI:
             
             self.console.print("\n")
             self.console.print(event_table)
+
+    def show_market(self):
+        """Mostra l'interfaccia del mercato per il commercio con le organizzazioni"""
+        if not self.game.diplomacy.has_embassy():
+            self.console.print("[yellow]Costruisci un'Ambasciata per sbloccare il commercio![/]")
+            return
+
+        # Mostra lista organizzazioni disponibili per il commercio
+        self.console.print("\n[bold cyan]Organizzazioni Commerciali[/]")
+        table = Table(title="Partner Commerciali")
+        table.add_column("ID", style="dim")
+        table.add_column("Organizzazione", style="cyan")
+        table.add_column("Attitudine", justify="right")
+        table.add_column("Bonus Commercio", justify="right")
+        table.add_column("Beni Speciali")
+
+        for idx, (org_id, org) in enumerate(self.game.diplomacy.organizations.items(), 1):
+            special_goods = []
+            for good_id, good in self.game.market.trade_goods.items():
+                if good.organization_bonus and org_id in good.organization_bonus:
+                    special_goods.append(good.name)
+
+            table.add_row(
+                str(idx),
+                org.name,
+                str(org.attitude),
+                f"x{org.trade_bonus:.1f}",
+                "\n".join(special_goods) if special_goods else "-"
+            )
+
+        self.console.print(table)
+
+        # Menu azioni
+        self.console.print("\n[bold cyan]Azioni Mercato[/]")
+        self.console.print("1. Acquista Beni")
+        self.console.print("2. Vendi Beni")
+        self.console.print("3. Torna al Menu")
+
+        choice = self.get_input()
+
+        if choice in ["1", "2"]:
+            # Selezione organizzazione
+            try:
+                org_num = int(self.get_input("\nSeleziona il numero dell'organizzazione: "))
+                if 1 <= org_num <= len(self.game.diplomacy.organizations):
+                    org_id = list(self.game.diplomacy.organizations.keys())[org_num - 1]
+                    
+                    # Mostra beni disponibili
+                    goods_table = Table(title=f"Beni {'Disponibili' if choice == '1' else 'da Vendere'}")
+                    goods_table.add_column("ID", style="dim")
+                    goods_table.add_column("Nome", style="cyan")
+                    goods_table.add_column("Prezzo", justify="right")
+                    goods_table.add_column("Rarità", justify="center")
+                    goods_table.add_column("Effetti Speciali")
+
+                    available_goods = []
+                    for good_id, good in self.game.market.trade_goods.items():
+                        if choice == "2" and self.game.resources.get(good_id) <= 0:
+                            continue
+
+                        price = self.game.market.get_price(good_id, org_id, is_buying=(choice == "1"))
+                        effects = []
+                        if good.special_effects:
+                            for effect, value in good.special_effects.items():
+                                effects.append(f"{effect}: {value:+}")
+
+                        available_goods.append((good_id, good))
+                        goods_table.add_row(
+                            str(len(available_goods)),
+                            good.name,
+                            str(price),
+                            "⭐" * good.rarity,
+                            "\n".join(effects) if effects else "-"
+                        )
+
+                    self.console.print("\n")
+                    self.console.print(goods_table)
+
+                    if not available_goods:
+                        self.show_error("Nessun bene disponibile per questa transazione")
+                        return
+
+                    # Selezione bene e quantità
+                    try:
+                        good_num = int(self.get_input("\nSeleziona il numero del bene: "))
+                        if 1 <= good_num <= len(available_goods):
+                            quantity = int(self.get_input("Quantità: "))
+                            good_id = available_goods[good_num - 1][0]
+                            
+                            # Mostra dettagli transazione prima della conferma
+                            price_info = self.game.market.get_price_details(
+                                good_id, 
+                                org_id, 
+                                quantity, 
+                                is_buying=(choice == "1")
+                            )
+                            
+                            if price_info["success"]:
+                                details = price_info["details"]
+                                # Mostra dettagli transazione in una tabella
+                                transaction_table = Table(title="Dettagli Transazione")
+                                transaction_table.add_column("Dettaglio", style="cyan")
+                                transaction_table.add_column("Valore", justify="right")
+                                
+                                # Info base
+                                transaction_table.add_row("Tipo", "Acquisto" if choice == "1" else "Vendita")
+                                transaction_table.add_row("Bene", available_goods[good_num - 1][1].name)
+                                transaction_table.add_row("Quantità", str(quantity))
+                                
+                                # Calcolo prezzo
+                                transaction_table.add_row("Prezzo Base", f"{details['base_price']} rifornimenti")
+                                transaction_table.add_row("Rarità", f"x{details['rarity_multiplier']:.1f}")
+                                transaction_table.add_row(
+                                    f"Bonus {self.game.diplomacy.organizations[org_id].name}",
+                                    f"x{details['org_multiplier']:.1f}"
+                                )
+                                
+                                # Prezzo finale con colore
+                                if choice == "2":  # Se stai vendendo
+                                    transaction_table.add_row(
+                                        "[bold]Guadagno Totale[/]",
+                                        f"[bold green]{int(details['final_price'] * 0.8)} rifornimenti[/]"
+                                    )
+                                else:
+                                    transaction_table.add_row(
+                                        "[bold]Costo Totale[/]",
+                                        f"[bold red]{details['final_price']} rifornimenti[/]"
+                                    )
+                                
+                                self.console.print("\n")
+                                self.console.print(transaction_table)
+                                
+                                # Mostra riepilogo risorse
+                                resources_table = Table(title="Riepilogo Risorse")
+                                resources_table.add_column("Risorsa", style="cyan")
+                                resources_table.add_column("Disponibile", justify="right")
+                                resources_table.add_column("Dopo Transazione", justify="right", style="yellow")
+
+                                supplies = self.game.resources.get("supplies")
+                                new_supplies = supplies - details['final_price'] if choice == "1" else supplies + int(details['final_price'] * 0.8)
+                                resources_table.add_row(
+                                    "Rifornimenti (Valuta)",
+                                    str(supplies),
+                                    str(new_supplies)
+                                )
+
+                                if choice == "2":  # Se stai vendendo
+                                    current_amount = self.game.resources.get(good_id)
+                                    new_amount = current_amount - quantity
+                                    resources_table.add_row(
+                                        f"{available_goods[good_num - 1][1].name}",
+                                        str(current_amount),
+                                        str(new_amount)
+                                    )
+                                else:  # Se stai comprando
+                                    current_amount = self.game.resources.get(good_id)
+                                    new_amount = current_amount + quantity
+                                    resources_table.add_row(
+                                        f"{available_goods[good_num - 1][1].name}",
+                                        str(current_amount),
+                                        str(new_amount)
+                                    )
+
+                                self.console.print("\n")
+                                self.console.print(resources_table)
+                                
+                                if self.get_input("\nConfermi la transazione? (s/n) ").lower() == "s":
+                                    result = self.game.market.trade(
+                                        good_id, 
+                                        org_id, 
+                                        quantity, 
+                                        is_buying=(choice == "1"),
+                                        game_state=self.game
+                                    )
+                                    
+                                    if result["success"]:
+                                        self.console.print(f"\n[green]{result['message']}[/]")
+                                    else:
+                                        self.show_error(result["message"])
+                            else:
+                                self.show_error(price_info["message"])
+                        else:
+                            self.show_error("Numero bene non valido")
+                    except ValueError:
+                        self.show_error("Inserisci un numero valido")
+                else:
+                    self.show_error("Numero organizzazione non valido")
+            except ValueError:
+                self.show_error("Inserisci un numero valido")
 
     def show_defense(self):
         """Mostra lo stato del sistema difensivo e le strutture disponibili"""

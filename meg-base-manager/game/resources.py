@@ -17,8 +17,20 @@ class Resources:
             "supplies": 1
         }
         
-    def get(self, resource: str) -> int:
-        return self.resources.get(resource, 0)
+    def get(self, resource: str, default: int = 0) -> int:
+        """
+        Ottiene il valore di una risorsa, restituendo il valore di default se non esiste
+        
+        Args:
+            resource: Il nome della risorsa da ottenere
+            default: Il valore da restituire se la risorsa non esiste
+            
+        Returns:
+            int: La quantità della risorsa
+        """
+        if not isinstance(default, int):
+            default = 0
+        return self.resources.get(str(resource), default)
         
     def modify(self, resource: str, amount: int) -> bool:
         if resource not in self.resources:

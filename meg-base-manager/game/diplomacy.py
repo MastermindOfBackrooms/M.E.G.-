@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List
 import random
 
@@ -11,6 +11,16 @@ class Organization:
     trade_bonus: float = 1.0
     intel_sharing: bool = False
     military_support: bool = False
+    special_event_chance: float = 0.1  # Probabilità di eventi speciali
+    unique_ability: str = ""  # Abilità unica dell'organizzazione
+    relationship_threshold: Dict[str, int] = field(default_factory=lambda: {
+        "hostile": 20,      # Sotto 20: ostile
+        "unfriendly": 35,   # 20-35: poco amichevole
+        "neutral": 50,      # 35-50: neutrale
+        "friendly": 75,     # 50-75: amichevole
+        "allied": 90        # 75-90: alleato
+        # Sopra 90: alleato fidato
+    })
 
 class DiplomaticSystem:
     def __init__(self):
@@ -19,49 +29,65 @@ class DiplomaticSystem:
                 "partygoers",
                 "Festaioli",
                 "Un gruppo che organizza feste infinite nel Livello Fun. Pericolosi ma utili per il commercio di risorse rare.",
-                trade_bonus=1.5
+                trade_bonus=1.5,
+                special_event_chance=0.15,
+                unique_ability="Festa Eterna: Può aumentare drasticamente il morale della base, ma con rischi di corruzione"
             ),
             "meg": Organization(
                 "meg",
                 "M.E.G. Centrale", 
                 "Il quartier generale del Major Exploration Group. Fornisce supporto e risorse ai vari avamposti.",
-                trade_bonus=1.2
+                trade_bonus=1.2,
+                special_event_chance=0.08,
+                unique_ability="Supporto Centrale: Accesso a rifornimenti d'emergenza e supporto logistico avanzato"
             ),
             "bluestar": Organization(
                 "bluestar",
                 "Stella Blu",
                 "Un'organizzazione scientifica che studia le anomalie delle Backrooms. Esperti in ricerca e tecnologia.",
-                trade_bonus=1.3
+                trade_bonus=1.3,
+                special_event_chance=0.12,
+                unique_ability="Ricerca Avanzata: Può sbloccare tecnologie uniche e potenziamenti per la base"
             ),
             "crimson": Organization(
                 "crimson",
                 "Ordine Cremisi",
                 "Un gruppo militarizzato che mantiene l'ordine in alcuni livelli. Forniscono protezione in cambio di risorse.",
-                trade_bonus=1.4
+                trade_bonus=1.4,
+                special_event_chance=0.1,
+                unique_ability="Supporto Tattico: Fornisce addestramento militare avanzato e supporto in combattimento"
             ),
             "library": Organization(
                 "library",
                 "Biblioteca delle Backrooms",
                 "Custodi della conoscenza delle Backrooms. Scambiano informazioni preziose.",
-                trade_bonus=1.3
+                trade_bonus=1.3,
+                special_event_chance=0.1,
+                unique_ability="Sapienza Antica: Accesso a conoscenze rare e segreti dimenticati delle Backrooms"
             ),
             "wanderers": Organization(
                 "wanderers",
                 "Vagabondi delle Backrooms",
                 "Un gruppo nomade che vaga tra i livelli, commerciando risorse e informazioni. Ottimi esploratori.",
-                trade_bonus=1.2
+                trade_bonus=1.2,
+                special_event_chance=0.13,
+                unique_ability="Rete di Contatti: Può scoprire nuove rotte commerciali e opportunità di scambio"
             ),
             "eyes": Organization(
                 "eyes",
                 "Gli Occhi",
                 "Un misterioso gruppo che osserva e raccoglie informazioni. Possiedono conoscenze uniche sui livelli.",
-                trade_bonus=1.4
+                trade_bonus=1.4,
+                special_event_chance=0.11,
+                unique_ability="Visione Oscura: Può prevedere e prevenire eventi pericolosi"
             ),
             "facelings": Organization(
                 "facelings",
                 "I Senza Volto",
                 "Entità native delle Backrooms che talvolta commerciano con gli umani. Imprevedibili ma potenti alleati.",
-                trade_bonus=1.6
+                trade_bonus=1.6,
+                special_event_chance=0.2,
+                unique_ability="Poteri Anomali: Può fornire protezione sovrannaturale e abilità uniche"
             )
         }
         self.embassy_built = False
@@ -71,15 +97,23 @@ class DiplomaticSystem:
         return self.embassy_built
 
     def build_embassy(self):
+        """Costruisce l'ambasciata e inizializza le relazioni diplomatiche"""
         self.embassy_built = True
-        # Sblocca le interazioni diplomatiche iniziali
+        self.initialize_organizations()
+        print("\n[bold green]Ambasciata costruita con successo![/]")
+        print("Ora puoi interagire con le seguenti organizzazioni:")
         for org in self.organizations.values():
-            org.intel_sharing = False
-            org.military_support = False
-            org.trade_bonus = 1.0
+            print(f"- {org.name}: {org.description}")
+        print("\nOgni organizzazione ha un'attitudine iniziale verso la tua base.")
+        print("Migliora le relazioni attraverso missioni diplomatiche e scambi.")
 
     def can_interact(self, organization_id: str) -> bool:
-        return self.embassy_built and organization_id in self.organizations
+        """Verifica se è possibile interagire con un'organizzazione"""
+        if not self.embassy_built:
+            return False
+        if organization_id not in self.organizations:
+            return False
+        return True
 
     def modify_relation(self, organization_id: str, amount: int) -> bool:
         if not self.can_interact(organization_id):
@@ -198,12 +232,162 @@ class DiplomaticSystem:
                 "message": f"{org.name} ha rifiutato la richiesta"
             }
 
-    def daily_update(self):
+    def get_relationship_status(self, organization_id: str) -> str:
+        """Determina lo status della relazione con un'organizzazione"""
+        if not self.can_interact(organization_id):
+            return "non disponibile"
+            
+        org = self.organizations[organization_id]
+        attitude = org.attitude
+        
+        if attitude >= org.relationship_threshold["allied"]:
+            return "alleato fidato"
+        elif attitude >= org.relationship_threshold["friendly"]:
+            return "alleato"
+        elif attitude >= org.relationship_threshold["neutral"]:
+            return "amichevole"
+        elif attitude >= org.relationship_threshold["unfriendly"]:
+            return "neutrale"
+        elif attitude >= org.relationship_threshold["hostile"]:
+            return "poco amichevole"
+        else:
+            return "ostile"
+            
+    def trigger_special_event(self, organization_id: str, game_state) -> Dict:
+        """Attiva un evento speciale basato sull'organizzazione"""
+        if not self.can_interact(organization_id):
+            return {"success": False, "message": "Organizzazione non disponibile"}
+            
+        org = self.organizations[organization_id]
+        status = self.get_relationship_status(organization_id)
+        
+        # Solo organizzazioni amichevoli o meglio possono triggerare eventi positivi
+        if status in ["ostile", "poco amichevole", "neutrale"]:
+            return {"success": False, "message": "Relazioni insufficienti per eventi speciali"}
+            
+        if random.random() > org.special_event_chance:
+            return {"success": False, "message": "Nessun evento speciale attivato"}
+            
+        # Eventi specifici per organizzazione
+        special_events = {
+            "partygoers": {
+                "title": "Festa Interdimensionale",
+                "effects": {
+                    "morale": 20,
+                    "corruption": 5,
+                    "resources": {"almond_water": 10, "food": 15}
+                }
+            },
+            "meg": {
+                "title": "Supporto Centrale M.E.G.",
+                "effects": {
+                    "defense": 10,
+                    "resources": {"supplies": 30, "medical": 15}
+                }
+            },
+            "bluestar": {
+                "title": "Breakthrough Tecnologico",
+                "effects": {
+                    "research": 15,
+                    "defense": 5,
+                    "resources": {"reality_stabilizer": 1}
+                }
+            },
+            "crimson": {
+                "title": "Operazione Congiunta",
+                "effects": {
+                    "defense": 20,
+                    "morale": 10,
+                    "resources": {"fuel": 20}
+                }
+            },
+            "library": {
+                "title": "Rivelazione Antica",
+                "effects": {
+                    "intel": 25,
+                    "research": 10,
+                    "resources": {"ancient_text": 1}
+                }
+            },
+            "wanderers": {
+                "title": "Rotta Commerciale Segreta",
+                "effects": {
+                    "trade_bonus": 0.2,
+                    "resources": {"supplies": 25, "fuel": 15}
+                }
+            },
+            "eyes": {
+                "title": "Visione del Futuro",
+                "effects": {
+                    "intel": 30,
+                    "defense": 15,
+                    "corruption": -5
+                }
+            },
+            "facelings": {
+                "title": "Benedizione dei Senza Volto",
+                "effects": {
+                    "defense": 25,
+                    "corruption": 10,
+                    "resources": {"faceling_mask": 1}
+                }
+            }
+        }
+        
+        event = special_events[organization_id]
+        effects = event["effects"]
+        
+        # Applica gli effetti
+        message = f"[bold]{event['title']}[/]\n"
+        for effect, value in effects.items():
+            if effect == "morale":
+                game_state.stats.morale = min(100, game_state.stats.morale + value)
+                message += f"Morale {value:+}\n"
+            elif effect == "corruption":
+                game_state.stats.corruption_level = max(0, min(100, 
+                    game_state.stats.corruption_level + value))
+                message += f"Corruzione {value:+}\n"
+            elif effect == "defense":
+                game_state.defense.defense_rating += value
+                message += f"Difesa {value:+}\n"
+            elif effect == "research":
+                # Implementa bonus ricerca
+                message += f"Ricerca {value:+}\n"
+            elif effect == "intel":
+                game_state.intel.add_intel_points("level_0", value, event["title"])
+                message += f"Intel {value:+}\n"
+            elif effect == "trade_bonus":
+                org.trade_bonus += value
+                message += f"Bonus Commercio {value:+.1f}\n"
+            elif effect == "resources":
+                for resource, amount in value.items():
+                    game_state.resources.modify(resource, amount)
+                    message += f"{resource.replace('_', ' ').title()} {amount:+}\n"
+                    
+        return {
+            "success": True,
+            "message": message
+        }
+
+    def daily_update(self, game_state):
         """Aggiorna le relazioni diplomatiche giornalmente"""
         for org in self.organizations.values():
-            if random.random() < 0.1:  # 10% di chance di cambiamento giornaliero
-                change = random.randint(-2, 2)
+            # Base chance di cambiamento giornaliero
+            if random.random() < 0.1:
+                # Più probabile migliorare relazioni se amichevole, peggiorarle se ostile
+                status = self.get_relationship_status(org.id)
+                if status in ["alleato fidato", "alleato", "amichevole"]:
+                    change = random.randint(-1, 3)  # Più probabile migliorare
+                elif status in ["ostile", "poco amichevole"]:
+                    change = random.randint(-3, 1)  # Più probabile peggiorare
+                else:
+                    change = random.randint(-2, 2)  # Neutrale
+                    
                 self.modify_relation(org.id, change)
+                
+            # Chance di evento speciale
+            if random.random() < org.special_event_chance:
+                self.trigger_special_event(org.id, game_state)
 
     def to_dict(self) -> Dict:
         return {
@@ -229,5 +413,56 @@ class DiplomaticSystem:
                 org.military_support = org_data["military_support"]
                 org.trade_bonus = org_data["trade_bonus"]
 
+    def debug_status(self) -> Dict:
+        """Restituisce lo stato corrente del sistema diplomatico per debug"""
+        return {
+            "embassy_status": self.embassy_built,
+            "organizations_status": {
+                org_id: {
+                    "name": org.name,
+                    "attitude": org.attitude,
+                    "can_interact": self.can_interact(org_id)
+                }
+                for org_id, org in self.organizations.items()
+            }
+        }
+
     def reset(self):
         self.__init__()
+
+    def initialize_organizations(self):
+        """Inizializza le relazioni con le varie organizzazioni"""
+        for org in self.organizations.values():
+            # Reset degli stati
+            org.intel_sharing = False
+            org.military_support = False
+            
+            # Imposta attitudine iniziale in base all'organizzazione
+            if org.id == "meg":
+                org.attitude = 65  # La M.E.G. Centrale è naturalmente più amichevole
+                org.trade_bonus = 1.2
+            elif org.id == "library":
+                org.attitude = 60  # La Biblioteca è relativamente aperta alla cooperazione
+                org.trade_bonus = 1.3
+            elif org.id == "wanderers":
+                org.attitude = 55  # I Vagabondi sono neutrali ma aperti
+                org.trade_bonus = 1.2
+            elif org.id == "bluestar":
+                org.attitude = 50  # La Stella Blu è neutrale
+                org.trade_bonus = 1.3
+            elif org.id == "crimson":
+                org.attitude = 45  # L'Ordine Cremisi è cauto
+                org.trade_bonus = 1.4
+            elif org.id == "eyes":
+                org.attitude = 40  # Gli Occhi sono sospettosi
+                org.trade_bonus = 1.4
+            elif org.id == "partygoers":
+                org.attitude = 35  # I Festaioli sono imprevedibili
+                org.trade_bonus = 1.5
+            elif org.id == "facelings":
+                org.attitude = 30  # I Senza Volto sono i più diffidenti
+                org.trade_bonus = 1.6
+                
+            # Sblocca condivisione intel per organizzazioni più amichevoli
+            if org.attitude >= 60:
+                org.intel_sharing = True

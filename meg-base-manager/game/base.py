@@ -9,6 +9,7 @@ from .missions import MissionManager
 from .defense import DefenseSystem
 from .intel import IntelSystem
 from .diplomacy import DiplomaticSystem
+from .market import Market
 
 @dataclass
 class GameStats:
@@ -57,6 +58,7 @@ class GameState:
         self.defense = DefenseSystem()
         self.intel = IntelSystem()
         self.diplomacy = DiplomaticSystem()
+        self.market = Market()
         
     def new_game(self):
         self.stats = GameStats()  # Inizializza con i valori predefiniti
