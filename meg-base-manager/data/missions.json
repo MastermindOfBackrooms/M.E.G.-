@@ -783,7 +783,7 @@
                 },
                 "intel_points": 45
             },
-            "valid_levels": ["level_28", "level_pendulum"],
+            "valid_levels": ["level_28", "level_27", "level_29"],
             "level_requirements": {
                 "min_knowledge": 3,
                 "max_difficulty": 6
@@ -810,7 +810,7 @@
                 },
                 "intel_points": 40
             },
-            "valid_levels": ["level_pendulum", "level_omega"],
+            "valid_levels": ["level_30"],
             "level_requirements": {
                 "min_knowledge": 4,
                 "max_difficulty": 7
@@ -836,7 +836,7 @@
                 },
                 "intel_points": 30
             },
-            "valid_levels": ["level_0", "level_1", "level_4", "level_5", "level_8", "level_11"],
+            "valid_levels": ["level_0", "level_1", "level_4", "level_5", "level_8", "level_11", "level_22"],
             "level_requirements": {
                 "min_knowledge": 2,
                 "max_difficulty": 5
@@ -1629,6 +1629,120 @@
                 "completed_missions": ["time_anomaly", "pendulum_mystery"],
                 "min_prestige": 90,
                 "min_intel_total": 800
+            }
+        },
+        {
+            "id": "entity_corruption",
+            "title": "Sussurri nell'Oscurità",
+            "description": "Strane voci si diffondono tra gli agenti. Qualcosa sta influenzando le loro menti.",
+            "duration": 5,
+            "rewards": {
+                "resources": {
+                    "almond_water": -20,
+                    "medical": -15
+                },
+                "stats": {
+                    "prestige": -10,
+                    "morale": -25,
+                    "corruption_level": 25
+                },
+                "intel_points": 40
+            },
+            "valid_levels": ["level_2"],
+            "level_requirements": {
+                "min_knowledge": 3,
+                "max_difficulty": 6
+            },
+            "chain_mission": {
+                "next_mission": "darkness_spreads",
+                "required_intel": 300
+            }
+        },
+        {
+            "id": "darkness_spreads",
+            "title": "L'Oscurità si Diffonde",
+            "description": "La corruzione si sta diffondendo. Gli agenti mostrano comportamenti sempre più strani.",
+            "duration": 7,
+            "rewards": {
+                "resources": {
+                    "almond_water": -30,
+                    "medical": -25
+                },
+                "stats": {
+                    "prestige": -20,
+                    "morale": -35,
+                    "corruption_level": 50,
+                    "entity_encounters": 15
+                }
+            },
+            "prerequisites": {
+                "completed_missions": ["entity_corruption"],
+                "min_corruption": 20
+            },
+            "chain_mission": {
+                "next_mission": "final_corruption",
+                "required_intel": 500
+            }
+        },
+        {
+            "id": "final_corruption",
+            "title": "Abbraccio dell'Abisso",
+            "description": "La base è irriconoscibile. Gli agenti non sono più loro stessi.",
+            "duration": 10,
+            "rewards": {
+                "stats": {
+                    "corruption_level": 75,
+                    "entity_encounters": 30,
+                    "dark_events": 5
+                }
+            },
+            "prerequisites": {
+                "completed_missions": ["darkness_spreads"],
+                "min_corruption": 45,
+                "lost_agents": 2
+            }
+        },
+        {
+            "id": "resource_crisis",
+            "title": "Crisi delle Risorse",
+            "description": "Le scorte della base stanno raggiungendo livelli critici.",
+            "duration": 4,
+            "rewards": {
+                "resources": {
+                    "almond_water": -40,
+                    "food": -35,
+                    "medical": -30,
+                    "fuel": -25
+                },
+                "stats": {
+                    "prestige": -30,
+                    "morale": -20
+                }
+            },
+            "chain_mission": {
+                "next_mission": "desperate_measures",
+                "required_intel": 200
+            }
+        },
+        {
+            "id": "desperate_measures",
+            "title": "Misure Disperate",
+            "description": "La situazione è critica. Bisogna prendere decisioni difficili per la sopravvivenza.",
+            "duration": 6,
+            "rewards": {
+                "resources": {
+                    "almond_water": -50,
+                    "food": -45,
+                    "medical": -40
+                },
+                "stats": {
+                    "prestige": -40,
+                    "morale": -30
+                }
+            },
+            "prerequisites": {
+                "completed_missions": ["resource_crisis"],
+                "max_resources": 30
             }
         }
     ]
