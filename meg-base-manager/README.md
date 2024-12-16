@@ -41,7 +41,7 @@ Sopravvivi agli eventi casuali delle Backrooms
 👥 Crediti
 Creato con ❤️ da Jashin L.
 
-1.1 beta test
+1.3 beta test
 
 v1.0 problemi risolti
 - missioni (risolto)
@@ -52,7 +52,8 @@ v1.1 problemi risolti
 - generazione infinita di missioni tramite exploit per scegliere solo quelle facili ( imbroglione)
 - generazione infinita di risorse tramite exploit (non provate a cheattare nel gioco fatto da un cheater)
 - missioni troppo semplici ( volevate un souls like? bene l'avete voluto voi, scherzo)
-- 
+- ambasciata che non ambascia risolta
+
 
 possibili implementazioni :
 
@@ -66,3 +67,6 @@ aggiunta sistema diplomazia ancora più complesso (in arrivo)
 
 guida/tutorial ( no )
 
+mercato con sistema di commercio (implementato)
+
+migliorato il sistema di missioni 
