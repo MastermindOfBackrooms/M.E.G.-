@@ -20,13 +20,13 @@ class GameStats:
     rank: str = "Recluta"  # Rank iniziale
     
     def calculate_rank(self) -> str:
-        if self.prestige >= 90:
+        if self.prestige >= 150:  # Aumentato da 90
             return "Comandante"
-        elif self.prestige >= 70:
+        elif self.prestige >= 100:  # Aumentato da 70
             return "Veterano"
-        elif self.prestige >= 50:
+        elif self.prestige >= 70:  # Aumentato da 50
             return "Esperto"
-        elif self.prestige >= 30:
+        elif self.prestige >= 40:  # Aumentato da 30
             return "Agente"
         else:
             return "Recluta"
@@ -59,6 +59,7 @@ class GameState:
         self.intel = IntelSystem()
         self.diplomacy = DiplomaticSystem()
         self.market = Market()
+        self.current_level = "level_0"  # Livello iniziale
         
     def new_game(self):
         self.stats = GameStats()  # Inizializza con i valori predefiniti
@@ -87,7 +88,7 @@ class GameState:
                 self.events.check_events(self)
                 self.missions.update_missions(self)
                 self.defense.daily_update(self)
-                self.diplomacy.daily_update()
+                self.diplomacy.daily_update(self)
                 
                 # Controlla se è stato raggiunto un nuovo rank
                 if self.stats.update_rank():

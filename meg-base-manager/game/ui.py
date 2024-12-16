@@ -294,10 +294,90 @@ class UI:
 
     def show_intel(self):
         """Mostra le informazioni di intelligence sui livelli"""
-        for level_id in self.game.intel.levels_intel:
-            info = self.game.intel.get_level_info(level_id)
-            if not info:
-                continue
+        # Mostra stato corruzione
+        corruption_info = self.game.intel.get_corruption_info(self.game.current_level)
+        corruption_table = Table(title="Stato Sicurezza Base")
+        corruption_table.add_column("Parametro", style="cyan")
+        corruption_table.add_column("Valore", justify="right")
+        
+        # Colore basato sul livello di corruzione
+        corruption_color = "green"
+        if corruption_info["corruption_level"] >= 75:
+            corruption_color = "red"
+        elif corruption_info["corruption_level"] >= 50:
+            corruption_color = "yellow"
+            
+        corruption_table.add_row(
+            "Livello Corruzione",
+            f"[{corruption_color}]{corruption_info['corruption_level']}%[/]"
+        )
+        corruption_table.add_row(
+            "Agenti Sospetti",
+            str(corruption_info["suspicious_count"])
+        )
+        corruption_table.add_row(
+            "Stato Allerta",
+            f"[bold]{corruption_info['warning_level']}[/]"
+        )
+        
+        self.console.print(corruption_table)
+        self.console.print("")
+        
+        # Menu azioni intelligence
+        self.console.print("[bold cyan]Azioni Intelligence[/]")
+        self.console.print("1. Investiga Agente")
+        self.console.print("2. Purifica Agente")
+        self.console.print("3. Visualizza Intel Livelli")
+        self.console.print("4. Torna al Menu")
+        
+        choice = self.get_input()
+        
+        if choice == "1":
+            # Mostra lista agenti
+            self.console.print("\nAgenti Disponibili:")
+            for idx, agent in enumerate(self.game.personnel.agents, 1):
+                self.console.print(f"{idx}. {agent.name} ({agent.role})")
+                
+            try:
+                agent_num = int(self.get_input("\nSeleziona il numero dell'agente da investigare: "))
+                if 1 <= agent_num <= len(self.game.personnel.agents):
+                    agent = self.game.personnel.agents[agent_num - 1]
+                    result = self.game.intel.investigate_agent(agent.id, self.game)
+                    if result["success"]:
+                        self.console.print(f"\n{result['message']}")
+                    else:
+                        self.show_error(result["message"])
+                else:
+                    self.show_error("Numero agente non valido")
+            except ValueError:
+                self.show_error("Inserisci un numero valido")
+                
+        elif choice == "2":
+            # Mostra lista agenti
+            self.console.print("\nAgenti Disponibili:")
+            for idx, agent in enumerate(self.game.personnel.agents, 1):
+                self.console.print(f"{idx}. {agent.name} ({agent.role})")
+                
+            try:
+                agent_num = int(self.get_input("\nSeleziona il numero dell'agente da purificare: "))
+                if 1 <= agent_num <= len(self.game.personnel.agents):
+                    agent = self.game.personnel.agents[agent_num - 1]
+                    result = self.game.intel.purify_agent(agent.id, self.game)
+                    if result["success"]:
+                        self.console.print(f"\n[green]{result['message']}[/]")
+                    else:
+                        self.show_error(result["message"])
+                else:
+                    self.show_error("Numero agente non valido")
+            except ValueError:
+                self.show_error("Inserisci un numero valido")
+                
+        elif choice == "3":
+            # Mostra intel livelli
+            for level_id in self.game.intel.levels_intel:
+                info = self.game.intel.get_level_info(level_id)
+                if not info:
+                    continue
                 
             table = Table(title=f"Intel: {info['name']}")
             table.add_column("Informazione", style="cyan")

@@ -226,7 +226,17 @@ class DiplomaticSystem:
                 "help_type": help_type
             }
         else:
-            self.modify_relation(organization_id, -10)  # Diminuisce maggiormente in caso di rifiuto
+            # Penalità più severe per infiltrazioni fallite
+            self.modify_relation(organization_id, -15)  # Diminuisce maggiormente le relazioni
+            game_state.stats.morale -= 5  # Impatta il morale della base
+            game_state.stats.prestige -= 3  # Danneggia il prestigio
+            if random.random() < 0.2:  # 20% di chance di perdere risorse
+                game_state.resources.modify("supplies", -10)
+                game_state.resources.modify("medical", -5)
+            return {
+                "success": False,
+                "message": f"{org.name} ha scoperto il tentativo di infiltrazione! Relazioni danneggiate e risorse perse."
+            }
             return {
                 "success": False,
                 "message": f"{org.name} ha rifiutato la richiesta"
